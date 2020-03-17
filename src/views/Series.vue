@@ -1,12 +1,10 @@
 <template>
     <div class="series">
         <h1>Vue series</h1>
-        <ul>
-            <li>serie 1</li>
-            <li>serie 2</li>
-            <li>serie 3</li>
+        <ul v-for="serie in series">
+            <li>{{serie.ville}}</li>
         </ul>
-        <Serie/>
+<!--        <Serie/>-->
     </div>
 </template>
 
@@ -15,21 +13,25 @@
     import Serie from "../components/Serie";
 
     export default {
-        name: 'Series' ,
+        name: 'Series',
+        data() {
+            return {
+                series: this.$store.state.series
+            }
+        },
         components: {
             Serie
         },
-        methods:{
-
-        },
+        methods: {},
         mounted() {
+
         },
 
     }
 </script>
 <style lang="scss">
-    ul{
-        list-style:none;
+    ul {
+        list-style: none;
         padding: 0;
     }
 </style>

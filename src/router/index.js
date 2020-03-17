@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from "../views/Login";
 import Series from "../views/Series";
+import Photos from "../views/Photos";
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
         path: '/series',
         name: 'Series',
         component: Series
+    },
+    {
+        path: '/photos',
+        name: 'Photos',
+        component: Photos
     },
 ]
 
