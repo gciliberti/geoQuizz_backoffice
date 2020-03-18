@@ -1,11 +1,18 @@
 <template>
     <div id="app">
         <div id="nav">
-            <router-link to="/">Home</router-link>
-            |
-            <router-link to="/photos">Photos</router-link>
+            <div class="tabs">
+                <ul>
+                    <li>
+                        <router-link  to="/">Accueil</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/photos">Liste de photos</router-link>
+                    </li>
+                </ul>
+            </div>
+            <router-view/>
         </div>
-        <router-view/>
     </div>
 </template>
 
@@ -49,7 +56,7 @@
     #nav {
         padding: 30px;
 
-        a {
+        .active {
             font-weight: bold;
             color: #2c3e50;
 

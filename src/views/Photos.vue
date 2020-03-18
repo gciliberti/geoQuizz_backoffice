@@ -10,9 +10,9 @@
                                 <img :src="photo.url" alt="">
                             </figure>
                             <div class="card-content is-overlay is-clipped">
-              <span class="tag is-info">
-                {{photo.desc}}
-              </span>
+                                <span class="tag is-info">
+                                    {{photo.desc}}
+                                </span>
                             </div>
                         </div>
                         <footer class="card-footer">

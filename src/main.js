@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import axios from "axios"
 import "bulma/css/bulma.css"
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
 
 
 import {outils} from "./utils/utils"
@@ -16,6 +18,10 @@ window.axios = axios.create({
         token: false
     },
 });
+
+window.$ = require('jquery')
+window.JQuery = require('jquery')
+
 
 Vue.config.productionTip = false
 
