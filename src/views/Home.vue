@@ -13,6 +13,7 @@
                         </li>
                     </ul>
                 </div>
+                <router-view/>
                 <div class="component column is-10">
                     <Photo/>
                 </div>
@@ -39,16 +40,16 @@
 
     .home {
         .columns {
-            .column{
+            .column {
 
             }
 
-            .sidebar{
+            .sidebar {
                 background: aliceblue;
                 height: 770px;
             }
 
-            .component{
+            .component {
                 padding-left: 30px;
             }
         }

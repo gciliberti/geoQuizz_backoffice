@@ -1,47 +1,21 @@
 <template>
-    <div class="photo ">
-        <DropImage v-if="template === 'drop'"/>
-        <MapImage v-else-if="template === 'map'"/>
+    <div class="map-image">
+        <h2>Étape numéro 2 : Déterminer les coordonnées de la photo</h2>
 
-        <button v-if="template !== 'drop'" class="button is-primary is-rounded" @click="switchTemplate('drop')">
-            <span>Précédent</span>
-            <span class="icon is-small">
-                    <i class="fas fa-arrow-left"></i>
-                </span>
-        </button>
-        <button class="button is-primary is-rounded" @click="switchTemplate('map')">
-            <span>Suivant</span>
-            <span class="icon is-small">
-                    <i class="fas fa-arrow-right"></i>
-                </span>
-        </button>
+
     </div>
 </template>
 
 <script>
     // @ is an alias to /src
 
-    import DropImage from "./DropImage";
-    import MapImage from "./MapImage";
-
     export default {
-        name: 'Photo',
-        components: {
-            DropImage,
-            MapImage
-        },
+        name: 'MapImage',
+        components: {},
         data() {
-            return {
-                template: 'drop'
-            }
+            return {}
         },
-        methods: {
-
-
-            switchTemplate(template) {
-                this.template = template
-            }
-        },
+        methods: {},
         mounted() {
 
         },
