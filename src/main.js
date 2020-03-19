@@ -22,7 +22,7 @@ import {outils} from "./utils/utils"
 Vue.mixin(outils)
 
 window.axios = axios.create({
-    baseURL: 'http://api.backoffice.local/api/index.php/',
+    baseURL: 'http://api.backoffice.local/api/index.php',
     params: {
         token: false
     },

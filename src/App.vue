@@ -25,7 +25,7 @@
         },
         methods: {
             getPhotos() {
-                axios.get('http://api.backoffice.local/api/index.php/photos/').then((response) => {
+                axios.get('/photos/').then((response) => {
                     this.$store.commit('getPhotos', response.data.photos)
                 })
             },
