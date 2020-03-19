@@ -22,7 +22,7 @@ import {outils} from "./utils/utils"
 Vue.mixin(outils)
 
 window.axios = axios.create({
-    baseURL: 'http://api.backoffice.local/api/index.php',
+    baseURL: 'https://api.tallium.tech/backoffice/api/index.php',
     params: {
         token: false
     },
@@ -39,5 +39,15 @@ new Vue({
     store,
     render: function (h) {
         return h(App)
-    }
+    },
+    // beforeCreate() {
+    //     window.axios.interceptors.request.use((config) => {
+    //         if (this.$store.state.token) {
+    //             config.url += '?token=' + this.$store.state.token;
+    //         }
+    //         return config
+    //     }, error => {
+    //         return console.log(error)
+    //     })
+    // }
 }).$mount('#app')

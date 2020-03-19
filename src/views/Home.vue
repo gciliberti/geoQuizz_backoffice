@@ -24,13 +24,29 @@
 <script>
     // @ is an alias to /src
     import HelloWorld from '@/components/HelloWorld.vue'
-    import Photo from '@/components/Photo.vue'
 
     export default {
         name: 'Home',
         components: {
             HelloWorld,
-            Photo
+        },
+        methods: {
+            // getPhotos() {
+            //     axios.get('/photos').then((response) => {
+            //         this.$store.commit('getPhotos', response.data.photos)
+            //     })
+            // },
+            //
+            // getSeries() {
+            //     axios.get('/serie').then((response) => {
+            //         this.$store.commit('getSeries', response.data.series)
+            //     })
+            // },
+        },
+        mounted() {
+            console.log(this.$store.state.token)
+            // this.getSeries()
+            // this.getPhotos()
         }
     }
 </script>

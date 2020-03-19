@@ -1,3 +1,9 @@
 export const outils = {
-    methods: {}
+    methods: {
+
+        requireAuth(){
+            alert('vgyuctyityic')
+        }
+
+    }
 }

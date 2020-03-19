@@ -1,13 +1,17 @@
 <template>
     <div id="app">
         <div id="nav">
-            <div class="tabs">
+            <div v-if="token !== '' " class="tabs is-fullwidth">
                 <ul>
                     <li>
-                        <router-link  to="/">Accueil</router-link>
+                        <router-link to="/">Accueil</router-link>
                     </li>
                     <li>
                         <router-link to="/photos">Liste de photos</router-link>
+                    </li>
+                    <li @click="disconnect()">
+                        <router-link class="has-text-danger" to="/disconnect">Déconnexion
+                        </router-link>
                     </li>
                 </ul>
             </div>
@@ -21,26 +25,31 @@
 
     export default {
         data() {
-            return {}
+            return {
+                token: this.$store.state.token
+            }
         },
         methods: {
-            getPhotos() {
-                axios.get('/photos/').then((response) => {
-                    this.$store.commit('getPhotos', response.data.photos)
-                })
-            },
 
-            getSeries() {
-                axios.get('http://api.backoffice.local/api/index.php/series/').then((response) => {
-                    this.$store.commit('getSeries', response.data.series)
-                })
+            disconnect() {
+                this.$store.commit('getToken', '');
+                this.$router.push('/login')
+                console.log(this.$store.state.token)
             }
         },
         mounted() {
-            this.getPhotos();
-            this.getSeries()
 
         },
+        computed: {
+            updatetoken() {
+                return this.$store.state.token
+            }
+        },
+        watch: {
+            updatetoken: function (newVal, oldVal) {
+                this.token = newVal
+            }
+        }
 
     }
 </script>
@@ -63,6 +72,12 @@
 
             &.router-link-exact-active {
                 color: #42b983;
+            }
+        }
+
+        .tabs {
+            button {
+                float: right;
             }
         }
     }

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersist from "vuex-persist";
 
+
 const vp = new VuexPersist({
     key: 'store',
     storage: window.localStorage
@@ -14,7 +15,8 @@ export default new Vuex.Store({
 
     state: {
         series: [],
-        photos: []
+        photos: [],
+        token: ''
     },
     mutations: {
         getSeries(state, series) {
@@ -22,6 +24,10 @@ export default new Vuex.Store({
         },
         getPhotos(state, photos) {
             state.photos = photos
+        },
+
+        getToken(state, token) {
+            state.token = token
         }
 
     },
