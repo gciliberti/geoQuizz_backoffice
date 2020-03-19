@@ -1,21 +1,19 @@
 <template>
     <div class="home section">
-
         <div>
             <div class="columns">
                 <div class=" sidebar column is-2">
                     <ul>
                         <li>
-                            <router-link to="/photo">Ajouter une photo</router-link>
+                            <router-link to="/home/photo">Ajouter une photo</router-link>
                         </li>
                         <li>
-                            <router-link to="/addPhoto">Ajouter ubne série</router-link>
+                            <router-link to="/home/serie">Ajouter ubne série</router-link>
                         </li>
                     </ul>
                 </div>
-                <router-view/>
                 <div class="component column is-10">
-                    <Photo/>
+                    <router-view/>
                 </div>
             </div>
         </div>

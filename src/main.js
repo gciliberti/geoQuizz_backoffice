@@ -6,6 +6,9 @@ import axios from "axios"
 import "bulma/css/bulma.css"
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
+import "leaflet/dist/leaflet.css";
+
+
 
 
 import {outils} from "./utils/utils"

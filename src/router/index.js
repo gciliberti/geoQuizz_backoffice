@@ -12,7 +12,17 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: Home
+        component: Home,
+        children: [
+            {
+                path: '/home/photo',
+                component: Photo
+            },
+            {
+                path: '/home/serie',
+                component: Series
+            }
+        ]
     },
     {
         path: '/about',
@@ -31,21 +41,13 @@ const routes = [
         name: 'Login',
         component: Login
     },
-    {
-        path: '/series',
-        name: 'Series',
-        component: Series
-    },
+
     {
         path: '/photos',
         name: 'Photos',
         component: Photos
     },
-    {
-        path: '/photo',
-        name: 'Photo',
-        component: Photo
-    },
+
 ]
 
 const router = new VueRouter({

@@ -1,6 +1,9 @@
 <template>
     <div class="map-image">
-        <h2>Étape numéro 2 : Déterminer les coordonnées de la photo</h2>
+        <h2 @click="alert('composa')">Étape numéro 2 : Déterminer les coordonnées de la photo</h2>
+        <div class="map">
+            <LMap ref="map" :zoom="zoom" :center="[latitude, longitude]"/>
+        </div>
 
 
     </div>
@@ -9,64 +12,62 @@
 <script>
     // @ is an alias to /src
 
+    import {latLng} from "leaflet";
+    import {
+        LMap,
+        LTileLayer,
+        LMarker,
+        LPopup,
+        LIcon,
+        LControlScale,
+        LCircle
+    } from "vue2-leaflet";
+
+
     export default {
         name: 'MapImage',
-        components: {},
-        data() {
-            return {}
+        components: {
+            LMap,
+            LTileLayer,
+            LMarker,
+            LPopup,
+            LControlScale,
+            LIcon,
+            LCircle
         },
-        methods: {},
+        data() {
+            return {
+                latitude: "",
+                longitude: "",
+                zoom: 18,
+
+            }
+        },
+        methods: {
+            showPosition(position) {
+                this.latitude = position.coords.latitude;
+                this.longitude = position.coords.longitude;
+            }
+        },
         mounted() {
+
+            alert('composant map')
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(this.showPosition);
+            }
 
         },
 
     }
 </script>
 <style lang="scss">
-    .photo {
-        h2 {
-            text-align: left;
-            margin: 0 0 20px 0;
-        }
 
-        .file {
-            cursor: pointer;
-            border: 2px solid #00D1B2;
+    .map-image {
+        .map {
+            z-index: 1;
             width: 500px;
             height: 300px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-
-            &.isHover {
-                border: 2px #00D1B2 solid;
-
-            }
-
-            img {
-                width: auto;
-                height: 300px;
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            label {
-                width: 100%;
-
-                input {
-                    width: 100%;
-                }
-            }
-        }
-
-        button {
-            margin-top: 50px;
-            margin-left: 5px;
         }
     }
-
-
 </style>
