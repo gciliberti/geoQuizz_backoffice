@@ -27,8 +27,17 @@
         <div class="map-image" v-if="i === 2">
             <h2>Étape numéro 2 : Déterminer les coordonnées de la photo</h2>
             <div class="map">
-                <l-map ref="map" :zoom="zoom" :center="[latitude, longitude]" style="height: 300px; width:500px">
+                <l-map ref="map" :zoom="zoom" :center="marker.position" style="height: 300px; width:500px"
+                       @click="changeMarker" class="leaflet-grab">
+                    <l-control-scale
+                            position="topright"
+                            :imperial="false"
+                            :metric="true"
+                    ></l-control-scale>
+                    <l-tile-layer :url="url"/>
+                    <l-marker :lat-lng.sync="marker.position" :draggable="true" :@dragexit="changeMarker" ></l-marker>
                 </l-map>
+                <p>position du marker : {{marker.position.lat}}, {{marker.position.lng}}</p>
             </div>
         </div>
 
@@ -83,14 +92,20 @@
                 imageName: '',
                 imagesize: '',
 
+
+                marker: {
+                    position: {lat: '', lng: ''}
+                },
                 latitude: "",
                 longitude: "",
-                zoom: 18,
+                zoom: 15,
+                url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
             }
         },
         methods: {
 
+            //pour upload la photo
             onDropp(e) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -122,7 +137,7 @@
                 console.log(this.imageSrc)
             },
 
-
+            //pour naviguer entre les différents formulaires
             prev(i) {
 
                 if (this.i > 1) {
@@ -136,10 +151,20 @@
                 }
             },
 
+            //pour la map
             showPosition(position) {
-                this.latitude = position.coords.latitude;
-                this.longitude = position.coords.longitude;
+                this.marker.position.lat = position.coords.latitude;
+                this.marker.position.lng = position.coords.longitude;
                 console.log(this.latitude + "," + this.longitude)
+            },
+
+            changeMarker(e) {
+                this.marker.position.lat = e.latlng.lat
+                this.marker.position.lng = e.latlng.lng
+            },
+
+            dragMarker(e) {
+                console.log(e)
             }
         },
         mounted() {
@@ -147,13 +172,30 @@
             // if (this.i === 2) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(this.showPosition);
+
             }
+
+
             // }
-        },
+
+
+        }, watch: {
+            i: function (val) {
+                if (val === 2) {
+                    setTimeout(() => {
+                        let map = this.$refs.map;
+                        console.log(map)
+                    }, 100);
+
+                }
+            }
+        }
 
     }
 </script>
 <style lang="scss">
+
+
     .photo {
         h2 {
             text-align: left;
@@ -198,6 +240,8 @@
 
         .map-image {
             .map {
+                cursor: pointer;
+
                 z-index: 1;
                 width: 500px;
                 height: 300px;
