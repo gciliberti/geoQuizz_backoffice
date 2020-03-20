@@ -23,13 +23,16 @@ Vue.mixin(outils)
 
 window.axios = axios.create({
     baseURL: 'https://api.tallium.tech/backoffice/api/index.php',
-    params: {
-        token: false
+    headers: {
+        'Authorization': ''
     },
 });
 
+
 window.$ = require('jquery')
 window.JQuery = require('jquery')
+
+Vue.prototype.$bus = new Vue();
 
 
 Vue.config.productionTip = false
@@ -40,14 +43,15 @@ new Vue({
     render: function (h) {
         return h(App)
     },
-    // beforeCreate() {
-    //     window.axios.interceptors.request.use((config) => {
-    //         if (this.$store.state.token) {
-    //             config.url += '?token=' + this.$store.state.token;
-    //         }
-    //         return config
-    //     }, error => {
-    //         return console.log(error)
-    //     })
-    // }
+    beforeCreate() {
+        window.axios.interceptors.request.use((config) => {
+            if (store.state.token) {
+                config.headers['Authorization'] = 'Bearer ' + store.state.token
+            }
+            return config
+        }, error => {
+            return console.log(error)
+        })
+    }
+
 }).$mount('#app')

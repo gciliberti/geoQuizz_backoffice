@@ -7,7 +7,10 @@
                         <router-link to="/">Accueil</router-link>
                     </li>
                     <li>
-                        <router-link to="/photos">Liste de photos</router-link>
+                        <router-link to="/photos">Liste des photos</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/series">Liste des séries</router-link>
                     </li>
                     <li @click="disconnect()">
                         <router-link class="has-text-danger" to="/disconnect">Déconnexion

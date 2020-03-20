@@ -6,6 +6,7 @@ import Series from "../views/Series";
 import Photos from "../views/Photos";
 import Photo from "../components/Photo";
 import Register from "../views/Register";
+import Serie from "../components/Serie";
 
 
 import store from "../store/index"
@@ -25,7 +26,7 @@ const routes = [
             },
             {
                 path: '/home/serie',
-                component: Series
+                component: Serie
             }
         ],
         beforeEnter(to, from, next) {
@@ -61,6 +62,16 @@ const routes = [
         path: '/photos',
         name: 'Photos',
         component: Photos,
+        beforeEnter(to, from, next) {
+            if (to.name !== 'Login' && store.state.token === '') next({name: 'Login'})
+            else next()
+
+        }
+    },
+    {
+        path: '/series',
+        name: 'Series',
+        component: Series,
         beforeEnter(to, from, next) {
             if (to.name !== 'Login' && store.state.token === '') next({name: 'Login'})
             else next()

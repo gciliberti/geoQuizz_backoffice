@@ -31,22 +31,31 @@
             HelloWorld,
         },
         methods: {
-            // getPhotos() {
-            //     axios.get('/photos').then((response) => {
-            //         this.$store.commit('getPhotos', response.data.photos)
-            //     })
-            // },
-            //
-            // getSeries() {
-            //     axios.get('/serie').then((response) => {
-            //         this.$store.commit('getSeries', response.data.series)
-            //     })
-            // },
+            getPhotos() {
+                axios.get('/photos').then((response) => {
+                    this.$store.commit('getPhotos', response.data.photos)
+                })
+            },
+
+            getSeries() {
+                axios.get('/series').then((response) => {
+                    this.$store.commit('getSeries', response.data.series)
+                })
+            },
+
+            getMaps() {
+                axios.get('/maps').then((response) => {
+                    this.$store.commit('getMaps', response.data.maps)
+                })
+            }
         },
         mounted() {
-            console.log(this.$store.state.token)
-            // this.getSeries()
-            // this.getPhotos()
+            this.$bus.$on('update-photo-list', () => {
+                this.getPhotos()
+            });
+            this.getSeries();
+            this.getPhotos()
+            this.getMaps()
         }
     }
 </script>

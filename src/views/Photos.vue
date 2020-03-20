@@ -2,12 +2,18 @@
     <div class="photos section">
 
         <div class="container">
+            <div class="actions">
+                <a v-if="activeDelete === false" @click="activeDeletePhoto">Supprimer une photo</a>
+                <a v-else @click="activeDeletePhoto">Désactiver supression</a>
+            </div>
+
             <div class="columns is-multiline">
                 <div v-for="photo in photos" class="column is-one-quarter-desktop is-half-tablet">
+                    <a v-if="activeDelete === true" @click="deletePhoto(photo.id)" class="delete"></a>
                     <div class="card">
                         <div class="card-image">
-                            <figure class="image is-3by2">
-                                <img :src="photo.url" alt="">
+                            <figure class="image">
+                                <img ref="photo" :src="photo.url" alt="">
                             </figure>
                             <div class="card-content is-overlay is-clipped">
                                 <span class="tag is-info">
@@ -16,9 +22,9 @@
                             </div>
                         </div>
                         <footer class="card-footer">
-                            <a class="card-footer-item">
-                                Add
-                            </a>
+                            <p class="card-footer-item">
+                                {{photo.position}}
+                            </p>
                         </footer>
                     </div>
                 </div>
@@ -35,12 +41,77 @@
         components: {},
         data() {
             return {
-                photos: this.$store.state.photos
+                photos: this.$store.state.photos,
+                activeDelete: false
             }
         },
-        methods: {},
-        mounted() {
+        methods: {
+            activeDeletePhoto() {
+                this.activeDelete = !this.activeDelete
+            },
+
+            deletePhoto(id) {
+                axios.delete('/photo/' + id).then((response) => {
+                    console.log(response.status)
+                    this.$bus.$emit('update-photo-list')
+
+                })
+            }
+
         },
+        mounted() {
+            console.table(this.$refs.photo[5].naturalWidth)
+        },
+
+        computed: {
+            updatePhoto() {
+                return this.$store.state.photos
+            }
+        },
+        watch: {
+            updatePhoto: function (newVal, oldVal) {
+                this.photos = newVal
+            }
+        }
 
     }
 </script>
+
+<style lang="scss">
+    .container {
+        .actions {
+            padding: 0 0 15px 0;
+            text-align: left;
+
+            a {
+            }
+        }
+
+        a.delete {
+            z-index: 1;
+            left: 155px;
+            top: 15px;
+            position: relative;
+            background-color: #FF3860;
+            text-align: left;
+            height: 0;
+
+            &:before {
+                /*display: none;*/
+            }
+
+            &:after {
+                /*display: none;*/
+            }
+
+        }
+
+
+        figure.image {
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+</style>

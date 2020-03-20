@@ -1,0 +1,52 @@
+<template>
+    <div ref="photo" class="card" @click="selectPhoto(item)">
+        <div class="card-image">
+            <figure class="image">
+                <img :src="item.url" alt="">
+            </figure>
+            <div class="card-content is-overlay is-clipped">
+                                <span class="tag is-info">
+                                    {{item.desc}}
+                                </span>
+            </div>
+        </div>
+        <footer class="card-footer">
+            <p class="card-footer-item">
+                {{item.position}}
+            </p>
+        </footer>
+    </div>
+</template>
+
+<script>
+    // @ is an alias to /src
+
+    export default {
+        name: 'CardPhoto',
+        props: ['item'],
+        components: {},
+        data() {
+            return {}
+        },
+        methods: {
+            selectPhoto(photo) {
+                let card = this.$refs.photo
+                card.classList.toggle('card-active')
+
+                this.$store.commit('selectedPhotos', photo)
+
+
+            }
+        },
+        mounted() {
+        },
+
+
+    }
+</script>
+<style lang="scss">
+    .card-active {
+        filter: opacity(80%);
+        border: 2px solid #2c3e50;
+    }
+</style>

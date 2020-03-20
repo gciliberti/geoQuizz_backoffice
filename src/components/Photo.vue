@@ -61,7 +61,9 @@
                 <p><strong>Coordonnées :</strong> : {{marker.position.lat}}, {{marker.position.lng}}</p>
 
             </div>
-            <button v-if="desc !== '' && imageSrc !== ''" class="validate button is-primary is-outlined"
+            <p v-if="done === true">La photo à été uploadé !</p>
+            <button v-show="!done" v-if="desc !== '' && imageSrc !== ''"
+                    class="validate button is-primary is-outlined"
                     @click="uploadPhoto">Créer la photo
             </button>
 
@@ -126,7 +128,9 @@
                 latitude: "",
                 longitude: "",
                 zoom: 15,
-                url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+                done: false
 
             }
         },
@@ -137,7 +141,7 @@
                 e.stopPropagation();
                 e.preventDefault();
                 let droppedImg = e.dataTransfer.files;
-                this.createfile(droppedImg[0])
+                this.createFile(droppedImg[0])
                 this.imageName = droppedImg[0].name
                 this.imagesize = droppedImg[0].size
                 this.isActive = true;
@@ -211,6 +215,14 @@
 
                 axios.post('/photos/photo', param).then((response) => {
                     console.log(response.status)
+
+                    if (response.status === 200) {
+
+                        this.done = true
+                        this.$bus.$emit('update-photo-list')
+
+
+                    }
 
                     axios.get('/photos/').then((response) => {
                         this.$store.commit('getPhotos', response.data.photos)
