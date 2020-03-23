@@ -142,33 +142,30 @@
                 e.preventDefault();
                 let droppedImg = e.dataTransfer.files;
                 this.createFile(droppedImg[0])
-                this.imageName = droppedImg[0].name
-                this.imagesize = droppedImg[0].size
-                this.isActive = true;
-                this.isHover = true;
             },
             onChange(e) {
                 let files = e.target.files;
                 this.createFile(files[0]);
-                this.imageName = files[0].name
-                this.imagesize = files[0].size
-                this.isActive = true;
-                this.isHover = true;
+
             },
 
             createFile(file) {
                 console.log(file)
                 if (!file.type.match('image.*')) {
                     alert('Il faut glisser une image');
-                    return;
-                }
-                let img = new Image();
-                let reader = new FileReader();
+                } else {
+                    this.imageName = file.name
+                    this.imagesize = file.size
+                    this.isActive = true;
+                    this.isHover = true;
+                    let img = new Image();
+                    let reader = new FileReader();
 
-                reader.onload = (e) => {
-                    this.imageSrc = e.target.result;
-                };
-                reader.readAsDataURL(file);
+                    reader.onload = (e) => {
+                        this.imageSrc = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
             },
 
             addPhoto() {

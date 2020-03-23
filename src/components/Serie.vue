@@ -33,7 +33,8 @@
 
             </div>
             <div class="actions">
-                <a v-if="this.$store.state.selectedPhotos.length > 0" class="button is-danger first" @click="emptyPhotos">Réinitialiser
+                <a v-if="this.$store.state.selectedPhotos.length > 0" class="button is-danger first"
+                   @click="emptyPhotos">Réinitialiser
                     les
                     photos choisis</a>
                 <a v-if="isPhotoValidated === false" class="button is-success" @click="ValidatePhotos">Valider les
@@ -44,11 +45,53 @@
             </div>
 
         </div>
-        <div class="map-serie" v-if="i === 3">
+        <div class="photos-serie map" v-if="i === 3">
             <h2>Étape numéro 3 : Choisissez la carte de votre série</h2>
+            <div class="photos">
+                <div class="container-photos">
+                    <div class="columns is-multiline">
+                        <div v-for="map in maps" class="column is-one-quarter-desktop is-half-tablet">
+                            <!--                            <a v-if="activeDelete === true" @click="deletePhoto(photo.id)" class="delete"></a>-->
+                            <CardMap :item="map"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="actions">
+                <a v-if="mapSerie !== null" class="button is-danger first"
+                   @click="emptyMap">Réinitialiser
+                    la map choisi</a>
+                <a v-if="isMapValidated === false" class="button is-success" @click="validateMap">Valider la
+                    map sélectionné</a>
+                <p class="has-text-primary" v-else-if="isMapValidated === true">Les photos ont été validé !</p>
+
+            </div>
         </div>
+
         <div class="recap-serie" v-if="i === 4">
             <h2>Étape numéro 4 : Valider les informations de la série</h2>
+            <div class="recap">
+                <p v-if="ville !== ''"><strong>Ville </strong> : {{ville}}</p>
+                <p v-else class="has-text-danger has-icons-right">
+                    <span>Vous devez choisir une ville </span>
+                    <span><i class="fas fa-exclamation-triangle"></i></span>
+                </p>
+                <p v-if="dist !== null"><strong>Distance en jeu :</strong>{{dist}}</p>
+                <p v-else class="has-text-danger has-icons-right">
+                    <span>Vous devez choisir une distance de jeu </span>
+                    <span><i class="fas fa-exclamation-triangle"></i></span>
+                </p>
+
+                <div class="recap-map">
+                    <img v-if="mapSerie !== null" :src="mapSerie.miniature" alt="">
+                    <p v-else class="has-text-danger has-icons-right">
+                        <span>Vous devez choisir une map </span>
+                        <span><i class="fas fa-exclamation-triangle"></i></span>
+                    </p>
+                </div>
+
+            </div>
+
         </div>
         <button v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
             <span>Précédent</span>
@@ -69,12 +112,14 @@
     // @ is an alias to /src
 
     import CardPhoto from "./CardPhoto";
+    import CardMap from "./CardMap";
 
 
     export default {
         name: 'Serie',
         components: {
-            CardPhoto
+            CardPhoto,
+            CardMap
 
         },
         data() {
@@ -83,8 +128,11 @@
                 ville: '',
                 dist: null,
                 photos: this.$store.state.photos,
+                maps: this.$store.state.maps,
                 photosSerie: null,
-                isPhotoValidated: false
+                mapSerie: null,
+                isPhotoValidated: false,
+                isMapValidated: false,
 
             }
         },
@@ -105,7 +153,13 @@
 
             ValidatePhotos() {
                 this.photosSerie = this.$store.state.selectedPhotos
+                console.table(this.$store.state.selectedPhotos)
                 this.isPhotoValidated = !this.isPhotoValidated
+            },
+            validateMap() {
+                this.isMapValidated = !this.isMapValidated
+                this.mapSerie = this.$store.state.selectedMap
+                console.log(this.mapSerie)
             },
 
             emptyPhotos() {
@@ -116,12 +170,37 @@
                 document.querySelectorAll('.card-active').forEach((item) => {
                     item.classList.remove('card-active')
                 })
+            },
+
+            emptyMap() {
+                this.$store.commit('clearSelectedMap')
+                document.querySelectorAll('.card-active').forEach((item) => {
+                    item.classList.remove('card-active')
+                })
+                this.mapSerie = null
+                if (this.isMapValidated === true) {
+                    this.isMapValidated = !this.isMapValidated
+                }
             }
+
         },
         mounted() {
             this.isPhotoValidated = false
+            console.table(this.maps)
 
         },
+
+        // computed: {
+        //     changeMapActive() {
+        //         return this.mapsActive
+        //     }
+        // },
+        // watch: {
+        //     changeMapActive(newVal, oldVal) {
+        //         this.mapsActive = newVal
+        //         console.log(this.mapsActive)
+        //     }
+        // }
 
 
     }
@@ -171,7 +250,7 @@
                 margin-bottom: 15px;
 
                 a.first {
-                   margin-right: 15px;
+                    margin-right: 15px;
                 }
             }
 
@@ -193,6 +272,37 @@
                     }
                 }
             }
+        }
+
+
+        .photos-serie.map {
+            .photos {
+                height: auto;
+            }
+        }
+
+        .recap-serie {
+            .recap {
+                width: 500px;
+                height: auto;
+                border: 2px solid #00D1B2;
+                padding: 15px;
+                margin-left: auto;
+                margin-right: auto;
+                border-radius: 15px;
+
+                p {
+                    margin: 15px 0 15px 0;
+                }
+
+                img {
+                    width: 200px;
+                    height: auto;
+                }
+
+
+            }
+
         }
 
         button {

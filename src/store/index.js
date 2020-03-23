@@ -18,6 +18,7 @@ export default new Vuex.Store({
         photos: [],
         maps: [],
         selectedPhotos: [],
+        selectedMap: [],
         token: ''
     },
     mutations: {
@@ -33,9 +34,16 @@ export default new Vuex.Store({
         selectedPhotos(state, photos) {
             state.selectedPhotos.push(photos)
         },
+        selectedMap(state, map) {
+            state.selectedMap = map
+        },
         clearSelectedPhotos(state) {
             state.selectedPhotos = []
         },
+        clearSelectedMap(state) {
+            state.selectedMap = []
+        },
+
         getToken(state, token) {
             state.token = token
         },

@@ -41,6 +41,8 @@
             }
         },
         mounted() {
+            this.$store.commit('clearSelectedMap')
+            this.$store.commit('clearSelectedPhotos')
 
         },
         computed: {
