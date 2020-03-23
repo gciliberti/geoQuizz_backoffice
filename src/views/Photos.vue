@@ -23,7 +23,9 @@
                         </div>
                         <footer class="card-footer">
                             <p class="card-footer-item">
-                                {{photo.position}}
+                                <!--                                {{photo.position}}-->
+                                {{parseFloat(photo.position.split(',')[0]).toFixed(5)}},
+                                {{parseFloat(photo.position.split(',')[1]).toFixed(5)}}
                             </p>
                         </footer>
                     </div>
@@ -56,11 +58,24 @@
                     this.$bus.$emit('update-photo-list')
 
                 })
+            },
+
+            parseCoord() {
+
+                this.photos.forEach((item) => {
+                    console.log(item.position.split(',')[0])
+
+                })
+
             }
+
 
         },
         mounted() {
             console.table(this.$refs.photo[5].naturalWidth)
+            this.parseCoord()
+
+
         },
 
         computed: {

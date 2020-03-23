@@ -5,14 +5,17 @@
                 <div class=" sidebar column is-2">
                     <ul>
                         <li>
-                            <router-link to="/home/photo">Ajouter une photo</router-link>
+                            <router-link to="/photo">Ajouter une photo</router-link>
                         </li>
                         <li>
-                            <router-link to="/home/serie">Ajouter ubne série</router-link>
+                            <router-link to="/serie">Ajouter ubne série</router-link>
                         </li>
                     </ul>
                 </div>
                 <div class="component column is-10">
+                    <div v-if="this.$router.currentRoute.path === '/'" class="accueil">
+                        <h1>C L'ACCUEIL</h1>
+                    </div>
                     <router-view/>
                 </div>
             </div>
@@ -53,11 +56,16 @@
             this.$bus.$on('update-photo-list', () => {
                 this.getPhotos()
             });
+            this.$bus.$on('update-serie-list', () => {
+                this.getSeries()
+            });
             this.getSeries();
             this.getPhotos()
             this.getMaps()
             this.$store.commit('clearSelectedMap')
             this.$store.commit('clearSelectedPhotos')
+
+            console.log(this.$router.currentRoute)
         }
     }
 </script>

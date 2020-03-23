@@ -1,13 +1,13 @@
 <template>
     <div class="series section">
         <div class="container">
-            <!--            <div class="actions">-->
-            <!--                <a v-if="activeDelete === false" @click="activeDeletePhoto">Supprimer une photo</a>-->
-            <!--                <a v-else @click="activeDeletePhoto">Désactiver supression</a>-->
-            <!--            </div>-->
+            <div class="actions">
+                <a v-if="activeDelete === false" @click="activeDeleteSerie">Supprimer une Série</a>
+                <a v-else @click="activeDeleteSerie">Désactiver supression</a>
+            </div>
             <div class="columns is-multiline">
                 <div v-for="serie in series" class="column is-one-quarter-desktop is-half-tablet">
-                    <!--                    <a v-if="activeDelete === true" @click="deletePhoto(photo.id)" class="delete"></a>-->
+                    <a v-if="activeDelete === true" @click="deleteSerie(serie.id)" class="delete"></a>
                     <div class="card">
                         <div class="card-image">
                             <figure class="image">
@@ -38,14 +38,39 @@
         name: 'Series',
         data() {
             return {
-                series: this.$store.state.series
+                series: this.$store.state.series,
+                activeDelete: false
+
             }
         },
         components: {},
-        methods: {},
+        methods: {
+            activeDeleteSerie() {
+                this.activeDelete = !this.activeDelete
+            },
+
+            deleteSerie(id) {
+                axios.delete('/series/serie/' + id).then((response) => {
+                    console.log(response.status)
+                    this.$bus.$emit('update-serie-list')
+                })
+
+            }
+        },
         mounted() {
 
         },
+
+        computed: {
+            updatePhoto() {
+                return this.$store.state.series
+            }
+        },
+        watch: {
+            updatePhoto: function (newVal, oldVal) {
+                this.series = newVal
+            }
+        }
 
     }
 </script>

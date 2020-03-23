@@ -70,6 +70,7 @@
                             this.$store.commit('getToken', token);
                             // this.$store.commit('getMemberID', member_id.id.trim());
                             // this.$store.commit('getMemberName', member_id.fullname.trim());
+                            console.log(token)
                             this.$router.push('/');
                         } else {
                             console.log('erreur')

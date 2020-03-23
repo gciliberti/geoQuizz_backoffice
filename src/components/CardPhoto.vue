@@ -12,7 +12,8 @@
         </div>
         <footer class="card-footer">
             <p class="card-footer-item">
-                {{item.position}}
+                {{parseFloat(item.position.split(',')[0]).toFixed(5)}},
+                {{parseFloat(item.position.split(',')[1]).toFixed(5)}}
             </p>
         </footer>
     </div>

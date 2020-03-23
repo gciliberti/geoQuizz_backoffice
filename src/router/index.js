@@ -21,11 +21,11 @@ const routes = [
         component: Home,
         children: [
             {
-                path: '/home/photo',
+                path: '/photo',
                 component: Photo
             },
             {
-                path: '/home/serie',
+                path: '/serie',
                 component: Serie
             }
         ],

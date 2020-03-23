@@ -42,11 +42,17 @@
                     <l-tile-layer :url="url"/>
                     <l-marker :lat-lng.sync="marker.position" :draggable="true"></l-marker>
                 </l-map>
-                <p><strong> Coordonnées de la photo </strong> : {{marker.position.lat}}, {{marker.position.lng}}</p>
+                <p><strong> Coordonnées de la photo </strong> : {{parseFloat(marker.position.lat).toFixed(5)}}, {{parseFloat(marker.position.lng).toFixed(5)}}</p>
             </div>
         </div>
         <div v-if="i === 3" class="recap-photo">
-            <h2>Étape numéro 3 : Validation des données</h2>
+            <h2>Étape numéro 3 : Validation des données
+                <button v-show="!done" v-if="desc !== '' && imageSrc !== ''"
+                        class="validate button is-primary is-outlined"
+                        @click="uploadPhoto">Créer la photo
+                </button>
+                <p class="has-text-success" v-if="done === true">La photo à été uploadé !</p>
+            </h2>
             <div class="recap">
                 <img v-if="imageSrc !== ''" :src="imageSrc" alt="">
                 <p v-else class="has-text-danger has-icons-right">
@@ -58,19 +64,20 @@
                     <span>Vous devez écrire une description </span>
                     <span><i class="fas fa-exclamation-triangle"></i></span>
                 </p>
-                <p><strong>Coordonnées :</strong> : {{marker.position.lat}}, {{marker.position.lng}}</p>
+                <p><strong>Coordonnées :</strong> : {{parseFloat(marker.position.lat).toFixed(5)}},
+                    {{parseFloat(marker.position.lng).toFixed(5)}}</p>
 
             </div>
-            <p v-if="done === true">La photo à été uploadé !</p>
-            <button v-show="!done" v-if="desc !== '' && imageSrc !== ''"
-                    class="validate button is-primary is-outlined"
-                    @click="uploadPhoto">Créer la photo
-            </button>
+            <!--            <p v-if="done === true">La photo à été uploadé !</p>-->
+            <!--            <button v-show="!done" v-if="desc !== '' && imageSrc !== ''"-->
+            <!--                    class="validate button is-primary is-outlined"-->
+            <!--                    @click="uploadPhoto">Créer la photo-->
+            <!--            </button>-->
 
         </div>
 
 
-        <button v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
+        <button v-show="done === false" v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
             <span>Précédent</span>
             <span class="icon is-small">
                     <i class="fas fa-arrow-left"></i>
@@ -190,7 +197,6 @@
             showPosition(position) {
                 this.marker.position.lat = position.coords.latitude;
                 this.marker.position.lng = position.coords.longitude;
-                console.log(this.latitude + "," + this.longitude)
             },
 
 
@@ -200,52 +206,37 @@
                 let src = this.imageSrc.split(',');
                 let photo = src[1]
                 let desc = this.desc
+                let lat = parseFloat(this.marker.position.lat).toFixed(5);
+                let lng = parseFloat(this.marker.position.lng).toFixed(5)
+
                 let localisation = this.marker.position.lat + ',' + this.marker.position.lng
                 let param = {
                     photo: photo,
                     description: desc,
                     localisation: localisation
                 }
-
                 console.log(param)
-
-
-                axios.post('/photos/photo', param).then((response) => {
-                    console.log(response.status)
-
-                    if (response.status === 200) {
-
-                        this.done = true
-                        this.$bus.$emit('update-photo-list')
-
-
-                    }
-
-                    axios.get('/photos/').then((response) => {
-                        this.$store.commit('getPhotos', response.data.photos)
-                    })
-
-                }).catch((err) => {
-                    console.log(err);
-                    alert("Une erreur est survenue");
-                })
-
+                // axios.post('/photos/photo', param).then((response) => {
+                //     console.log(response.status)
+                //
+                //     if (response.status === 200) {
+                //
+                //         this.done = true
+                //         this.$bus.$emit('update-photo-list')
+                //     }
+                //     axios.get('/photos/').then((response) => {
+                //         this.$store.commit('getPhotos', response.data.photos)
+                //     })
+                // }).catch((err) => {
+                //     console.log(err);
+                //     alert("Une erreur est survenue");
+                // })
             }
-
-
         },
         mounted() {
-
-            // if (this.i === 2) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(this.showPosition);
-
             }
-
-
-            // }
-
-
         }, watch: {
             i: function (val) {
                 if (val === 2) {
@@ -267,6 +258,11 @@
         h2 {
             text-align: left;
             margin: 0 0 20px 0;
+
+            button.validate {
+                margin-top: -8px;
+            }
+
         }
 
         .map-image, .drop-photo, .recap-photo {

@@ -63,18 +63,19 @@
                     la map choisi</a>
                 <a v-if="isMapValidated === false" class="button is-success" @click="validateMap">Valider la
                     map sélectionné</a>
-                <p class="has-text-primary" v-else-if="isMapValidated === true">Les photos ont été validé !</p>
+                <p class="has-text-primary" v-else-if="isMapValidated === true">La map a été validé !</p>
 
             </div>
         </div>
 
         <div class="recap-serie" v-if="i === 4">
             <h2>Étape numéro 4 : Valider les informations de la série
-                <button v-if="photosSerie !==null && mapSerie !==null && ville !== '' && dist !== null"
+                <button
+                        v-if="photosSerie !==null && mapSerie !==null && ville !== '' && dist !== null && done === false"
                         class="validate button is-primary is-outlined"
                         @click="createSerie">Créer la série
                 </button>
-                <p v-show="done === true">La série à bien été crée</p>
+                <p class="has-text-success" v-show="done === true">La série à bien été crée</p>
             </h2>
 
             <div class="recap">
@@ -101,23 +102,25 @@
                     </p>
                 </div>
                 <div class="recap-photo">
-                    <p>Voici les photos que vous avez choisi : </p>
-
-                    <div v-if="photosSerie !== null" class="photos">
-                        <div class="container-photos">
-                            <div class="columns is-multiline">
-                                <div v-for="photo in photosSerie" class="column is-one-quarter-desktop is-half-tablet">
-                                    <div ref="photo" class="card">
-                                        <div class="card-image">
-                                            <figure class="image">
-                                                <img class="photos" :src="photo.url" alt="">
-                                            </figure>
-                                            <div class="card-content is-overlay is-clipped">
+                    <div v-if="photosSerie !== null">
+                        <p>Voici les photos que vous avez choisi : </p>
+                        <div class="photos">
+                            <div class="container-photos">
+                                <div class="columns is-multiline">
+                                    <div v-for="photo in photosSerie"
+                                         class="column is-one-quarter-desktop is-half-tablet">
+                                        <div ref="photo" class="card">
+                                            <div class="card-image">
+                                                <figure class="image">
+                                                    <img class="photos" :src="photo.url" alt="">
+                                                </figure>
+                                                <div class="card-content is-overlay is-clipped">
+                                                </div>
                                             </div>
+
                                         </div>
 
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -131,7 +134,7 @@
 
             </div>
         </div>
-        <button v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
+        <button v-show="done === false" v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
             <span>Précédent</span>
             <span class="icon is-small">
                     <i class="fas fa-arrow-left"></i>
@@ -225,29 +228,23 @@
             },
 
             createSerie() {
-
                 let photosTab = []
-
                 this.photosSerie.forEach((item) => {
                     photosTab.push(item.id)
                 })
-                console.log(photosTab)
-
                 let param = {
                     ville: this.ville,
                     map_refs: this.mapSerie.id,
                     dist: this.dist,
                     photos: [photosTab]
                 }
-
-
                 axios.post('series/serie', param).then((response) => {
-
                     this.done = true;
+                    this.$bus.$emit('update-serie-list')
                     console.log(response.status)
                 })
 
-                console.log(param)
+
             }
 
         },
@@ -255,27 +252,22 @@
             this.isPhotoValidated = false
             this.photosSerie = null
             this.mapSerie = null
+            this.done = false
             console.table(this.maps)
 
         },
 
-        // computed: {
-        //     changeMapActive() {
-        //         return this.mapsActive
-        //     }
-        // },
-        // watch: {
-        //     changeMapActive(newVal, oldVal) {
-        //         this.mapsActive = newVal
-        //         console.log(this.mapsActive)
-        //     }
-        // }
+
 
 
     }
 </script>
 <style lang="scss">
     .serie {
+
+        p{
+            padding-top: 15px;
+        }
 
         .infos-serie, .photos-serie, .map-serie .recap-photo {
             height: auto;
