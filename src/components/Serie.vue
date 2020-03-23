@@ -69,29 +69,67 @@
         </div>
 
         <div class="recap-serie" v-if="i === 4">
-            <h2>Étape numéro 4 : Valider les informations de la série</h2>
+            <h2>Étape numéro 4 : Valider les informations de la série
+                <button v-if="photosSerie !==null && mapSerie !==null && ville !== '' && dist !== null"
+                        class="validate button is-primary is-outlined"
+                        @click="createSerie">Créer la série
+                </button>
+                <p v-show="done === true">La série à bien été crée</p>
+            </h2>
+
             <div class="recap">
-                <p v-if="ville !== ''"><strong>Ville </strong> : {{ville}}</p>
+                <p v-if="ville !== ''">Vous avez choisi de créer une série dans la ville de : <strong>{{ville}}</strong>
+                </p>
                 <p v-else class="has-text-danger has-icons-right">
                     <span>Vous devez choisir une ville </span>
                     <span><i class="fas fa-exclamation-triangle"></i></span>
                 </p>
-                <p v-if="dist !== null"><strong>Distance en jeu :</strong>{{dist}}</p>
+                <p v-if="dist !== null">Vous avez choisi une distance en jeu de :<strong>{{dist}}</strong></p>
                 <p v-else class="has-text-danger has-icons-right">
                     <span>Vous devez choisir une distance de jeu </span>
                     <span><i class="fas fa-exclamation-triangle"></i></span>
                 </p>
 
                 <div class="recap-map">
-                    <img v-if="mapSerie !== null" :src="mapSerie.miniature" alt="">
+                    <div v-if="mapSerie !== null">
+                        <p>Vous avez choisi cette map :</p>
+                        <img class="map" v-if="mapSerie !== null" :src="mapSerie.miniature" alt="">
+                    </div>
                     <p v-else class="has-text-danger has-icons-right">
                         <span>Vous devez choisir une map </span>
                         <span><i class="fas fa-exclamation-triangle"></i></span>
                     </p>
                 </div>
+                <div class="recap-photo">
+                    <p>Voici les photos que vous avez choisi : </p>
+
+                    <div v-if="photosSerie !== null" class="photos">
+                        <div class="container-photos">
+                            <div class="columns is-multiline">
+                                <div v-for="photo in photosSerie" class="column is-one-quarter-desktop is-half-tablet">
+                                    <div ref="photo" class="card">
+                                        <div class="card-image">
+                                            <figure class="image">
+                                                <img class="photos" :src="photo.url" alt="">
+                                            </figure>
+                                            <div class="card-content is-overlay is-clipped">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p v-else class="has-text-danger has-icons-right">
+                        <span>Vous devez sélectionner quelques photos ! </span>
+                        <span><i class="fas fa-exclamation-triangle"></i></span>
+                    </p>
+                </div>
+
 
             </div>
-
         </div>
         <button v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
             <span>Précédent</span>
@@ -133,6 +171,7 @@
                 mapSerie: null,
                 isPhotoValidated: false,
                 isMapValidated: false,
+                done: false
 
             }
         },
@@ -164,6 +203,7 @@
 
             emptyPhotos() {
                 this.$store.commit('clearSelectedPhotos')
+                this.photosSerie = null
                 if (this.isPhotoValidated === true) {
                     this.isPhotoValidated = !this.isPhotoValidated
                 }
@@ -174,6 +214,7 @@
 
             emptyMap() {
                 this.$store.commit('clearSelectedMap')
+                this.mapSerie = null
                 document.querySelectorAll('.card-active').forEach((item) => {
                     item.classList.remove('card-active')
                 })
@@ -181,11 +222,39 @@
                 if (this.isMapValidated === true) {
                     this.isMapValidated = !this.isMapValidated
                 }
+            },
+
+            createSerie() {
+
+                let photosTab = []
+
+                this.photosSerie.forEach((item) => {
+                    photosTab.push(item.id)
+                })
+                console.log(photosTab)
+
+                let param = {
+                    ville: this.ville,
+                    map_refs: this.mapSerie.id,
+                    dist: this.dist,
+                    photos: [photosTab]
+                }
+
+
+                axios.post('series/serie', param).then((response) => {
+
+                    this.done = true;
+                    console.log(response.status)
+                })
+
+                console.log(param)
             }
 
         },
         mounted() {
             this.isPhotoValidated = false
+            this.photosSerie = null
+            this.mapSerie = null
             console.table(this.maps)
 
         },
@@ -215,6 +284,10 @@
         h2 {
             text-align: left;
             margin: 0 0 20px 0;
+
+            button.validate {
+                margin-top: -8px;
+            }
         }
 
         .infos-serie {
@@ -283,9 +356,9 @@
 
         .recap-serie {
             .recap {
-                width: 500px;
+                width: auto;
                 height: auto;
-                border: 2px solid #00D1B2;
+                /*border: 2px solid #00D1B2;*/
                 padding: 15px;
                 margin-left: auto;
                 margin-right: auto;
@@ -295,9 +368,31 @@
                     margin: 15px 0 15px 0;
                 }
 
-                img {
+                img.map {
                     width: 200px;
                     height: auto;
+                }
+
+
+                .photos {
+                    height: 500px;
+                    overflow: auto;
+                    /*border: 2px solid #00D1B2;*/
+                    margin-bottom: 25px;
+
+
+                    .container-photos {
+                        background-color: ghostwhite;
+                        padding: 15px;
+                        overflow: hidden;
+                        height: auto;
+
+                        img.photos {
+                            width: 100%;
+                            height: auto;
+                        }
+
+                    }
                 }
 
 

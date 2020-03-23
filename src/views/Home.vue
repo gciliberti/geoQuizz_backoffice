@@ -56,6 +56,8 @@
             this.getSeries();
             this.getPhotos()
             this.getMaps()
+            this.$store.commit('clearSelectedMap')
+            this.$store.commit('clearSelectedPhotos')
         }
     }
 </script>
