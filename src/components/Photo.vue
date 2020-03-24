@@ -216,21 +216,21 @@
                     localisation: localisation
                 }
                 console.log(param)
-                // axios.post('/photos/photo', param).then((response) => {
-                //     console.log(response.status)
-                //
-                //     if (response.status === 200) {
-                //
-                //         this.done = true
-                //         this.$bus.$emit('update-photo-list')
-                //     }
-                //     axios.get('/photos/').then((response) => {
-                //         this.$store.commit('getPhotos', response.data.photos)
-                //     })
-                // }).catch((err) => {
-                //     console.log(err);
-                //     alert("Une erreur est survenue");
-                // })
+                axios.post('/photos/photo', param).then((response) => {
+                    console.log(response.status)
+
+                    if (response.status === 200) {
+
+                        this.done = true
+                        this.$bus.$emit('update-photo-list')
+                    }
+                    axios.get('/photos/').then((response) => {
+                        this.$store.commit('getPhotos', response.data.photos)
+                    })
+                }).catch((err) => {
+                    console.log(err);
+                    alert("Une erreur est survenue");
+                })
             }
         },
         mounted() {

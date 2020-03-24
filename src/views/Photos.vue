@@ -60,21 +60,9 @@
                 })
             },
 
-            parseCoord() {
-
-                this.photos.forEach((item) => {
-                    console.log(item.position.split(',')[0])
-
-                })
-
-            }
-
 
         },
         mounted() {
-            console.table(this.$refs.photo[5].naturalWidth)
-            this.parseCoord()
-
 
         },
 
