@@ -7,6 +7,7 @@ import Photos from "../views/Photos";
 import Photo from "../components/Photo";
 import Register from "../views/Register";
 import Serie from "../components/Serie";
+import DetailSerie from "../components/DetailSerie";
 
 
 import store from "../store/index"
@@ -82,6 +83,17 @@ const routes = [
         path: '/disconnect',
         name: 'Disconnect',
         component: Login,
+        beforeEnter(to, from, next) {
+            if (to.name !== 'Login' && store.state.token === '') next({name: 'Login'})
+            else next()
+
+        }
+    },
+
+    {
+        path: '/serie/:id',
+        name: 'DetailSerie',
+        component: DetailSerie,
         beforeEnter(to, from, next) {
             if (to.name !== 'Login' && store.state.token === '') next({name: 'Login'})
             else next()

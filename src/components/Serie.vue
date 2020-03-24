@@ -292,7 +292,7 @@
         .infos-serie {
             .infos {
                 width: 500px;
-                height: 300px;
+                height: auto;
                 margin-left: auto;
                 margin-right: auto;
                 padding: 15px;

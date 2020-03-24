@@ -9,21 +9,23 @@
                 <div v-for="serie in series" class="column is-one-quarter-desktop is-half-tablet">
                     <a v-if="activeDelete === true" @click="deleteSerie(serie.id)" class="delete"></a>
                     <div class="card">
-                        <div class="card-image">
-                            <figure class="image">
-                                <img :src="getMapScreenByRef(serie.map_refs)" alt="">
-                            </figure>
-                            <div class="card-content is-overlay is-clipped">
+                        <router-link :to="{name:'DetailSerie', params:{id:serie.id}}">
+                            <div class="card-image">
+                                <figure class="image">
+                                    <img :src="getMapScreenByRef(serie.map_refs)" alt="">
+                                </figure>
+                                <div class="card-content is-overlay is-clipped">
                                 <span class="tag is-info">
                                     {{serie.ville}}
                                 </span>
+                                </div>
                             </div>
-                        </div>
-                        <footer class="card-footer">
-                            <p class="card-footer-item">
-                                Distance : {{serie.dist}}
-                            </p>
-                        </footer>
+                            <footer class="card-footer">
+                                <p class="card-footer-item">
+                                    Distance : {{serie.dist}}
+                                </p>
+                            </footer>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -75,15 +77,29 @@
     }
 </script>
 <style lang="scss">
-    ul {
-        list-style: none;
-        padding: 0;
-    }
 
-    figure.image {
-        img {
-            width: 100%;
-            height: auto;
+    .series {
+
+        .container {
+
+
+            ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            .card {
+                cursor: pointer;
+
+                figure.image {
+                    img {
+                        width: 100%;
+                        height: auto;
+                    }
+                }
+            }
+
+
         }
     }
 </style>
