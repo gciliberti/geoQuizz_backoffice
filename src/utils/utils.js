@@ -10,6 +10,18 @@ export const outils = {
                     return maps[i].miniature
                 }
             }
+        },
+
+        getSerieDetailById(id) {
+
+            let series = this.$store.state.series
+            for (let i = 0; i < series.length; i++) {
+                // console.log(maps[i].id)
+                if (series[i].id == id) {
+                    return series[i]
+                }
+            }
+
         }
 
     }

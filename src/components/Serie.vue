@@ -67,7 +67,6 @@
 
             </div>
         </div>
-
         <div class="recap-serie" v-if="i === 4">
             <h2>Étape numéro 4 : Valider les informations de la série
                 <button

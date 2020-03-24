@@ -22,7 +22,7 @@ import {outils} from "./utils/utils"
 Vue.mixin(outils)
 
 window.axios = axios.create({
-    baseURL: 'https://api.tallium.tech/backoffice/api/index.php',
+    baseURL: 'https://apibackoffice.tallium.tech/',
     headers: {
         'Authorization': ''
     },

@@ -30,12 +30,11 @@
         },
         methods: {
             selectPhoto(photo) {
-                let card = this.$refs.photo
-                card.classList.toggle('card-active')
-
-                this.$store.commit('selectedPhotos', photo)
-
-
+                if (this.$router.currentRoute.name !== 'DetailSerie') {
+                    let card = this.$refs.photo
+                    card.classList.toggle('card-active')
+                    this.$store.commit('selectedPhotos', photo)
+                }
             }
         },
         mounted() {
