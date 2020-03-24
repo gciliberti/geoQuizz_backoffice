@@ -42,7 +42,8 @@
                     <l-tile-layer :url="url"/>
                     <l-marker :lat-lng.sync="marker.position" :draggable="true"></l-marker>
                 </l-map>
-                <p><strong> Coordonnées de la photo </strong> : {{parseFloat(marker.position.lat).toFixed(5)}}, {{parseFloat(marker.position.lng).toFixed(5)}}</p>
+                <p><strong> Coordonnées de la photo </strong> : {{parseFloat(marker.position.lat).toFixed(5)}},
+                    {{parseFloat(marker.position.lng).toFixed(5)}}</p>
             </div>
         </div>
         <div v-if="i === 3" class="recap-photo">
@@ -76,7 +77,7 @@
 
         </div>
 
-
+        <router-link to="/" v-if="done === true">Retour à l'accueil</router-link>
         <button v-show="done === false" v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
             <span>Précédent</span>
             <span class="icon is-small">

@@ -134,18 +134,27 @@
 
             </div>
         </div>
-        <button v-show="done === false" v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
-            <span>Précédent</span>
+        <router-link to="/" v-if="done === true">Retour à l'accueil</router-link>
+        <p class="has-text-danger" v-if="isPhotoValidated===false && i === 2">Vous devez valider les photos pour
+            continuer</p>
+        <p class="has-text-danger" v-else-if="isMapValidated===false && i === 3">Vous devez valider les photos pour
+            continuer</p>
+        <div v-else>
+            <button v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
             <span class="icon is-small">
                     <i class="fas fa-arrow-left"></i>
-                </span>
-        </button>
-        <button v-if="i !==4" class="button is-primary is-rounded" @click="next(1)">
-            <span>Suivant</span>
-            <span class="icon is-small">
+            </span>
+                <span>Précédent</span>
+            </button>
+            <button v-if="i !==4 " class="button is-primary is-rounded"
+                    @click="next(1)">
+                <span>Suivant</span>
+                <span class="icon is-small">
                     <i class="fas fa-arrow-right"></i>
                 </span>
-        </button>
+            </button>
+        </div>
+
     </div>
 </template>
 
@@ -258,14 +267,12 @@
         },
 
 
-
-
     }
 </script>
 <style lang="scss">
     .serie {
 
-        p{
+        p {
             padding-top: 15px;
         }
 
