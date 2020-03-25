@@ -36,8 +36,25 @@
                 <div class="container-photos">
                     <div class="columns is-multiline">
                         <div v-for="photo in photosSerie" class="column is-one-quarter-desktop is-half-tablet">
-                            <a v-if="activeDelete === true" @click="deletePhoto(photo.id)" class="delete"></a>
-                            <CardPhoto :item="photo"/>
+                            <div ref="photo" class="card photo">
+                                <div class="card-image">
+                                    <figure class="image">
+                                        <img :src="photo.url" alt="">
+                                    </figure>
+                                    <div class="card-content is-overlay is-clipped">
+                                <span class="tag is-info">
+                                    {{photo.desc}}
+                                </span>
+                                    </div>
+                                </div>
+                                <footer class="card-footer">
+                                    <p class="card-footer-item">
+                                        {{parseFloat(photo.position.split(',')[0]).toFixed(5)}},
+                                        {{parseFloat(photo.position.split(',')[1]).toFixed(5)}}
+                                    </p>
+                                </footer>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -47,8 +64,29 @@
         <div class="modal" v-bind:class="{'is-active':isModalActive}">
             <div class="modal-background"></div>
             <div class="modal-content">
-                <!-- Any other Bulma elements you want -->
-                <h1>bvhjovfhjl</h1>
+                <div class="section gallery">
+                    <h1>Veuillez sélectionner une photo :</h1>
+                    <div class="container-photos">
+                        <div class="columns is-multiline">
+                            <div v-for="photo in this.$store.state.photos"
+                                 class="column is-one-quarter-desktop is-half-tablet">
+                                <CardPhoto :item="photo"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <div v-if="isPhotoAdded === false">
+                            <button v-if="isPhotoSelected" class="validate button is-primary is-outlined"
+                                    @click="addPhoto">
+                                Ajouter la photo
+                            </button>
+                            <p v-else class="has-text-danger">Vous devez sélectionner une photo pour continuer</p>
+                        </div>
+                        <div v-else>
+                            <p class="has-text-success">La photo a bien ajouté</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <button @click="openModal" class="modal-close is-large" aria-label="close"></button>
         </div>
@@ -68,7 +106,10 @@
                 serie: [],
                 photosSerie: [],
                 activeDelete: false,
-                isModalActive: false
+                isModalActive: false,
+                isPhotoSelected: false,
+                isPhotoAdded: false
+
             }
         },
         components: {CardPhoto},
@@ -96,16 +137,40 @@
 
             openModal() {
                 this.isModalActive = !this.isModalActive
-            }
+            },
 
+            changeState(state) {
+                this.isPhotoSelected = state
+            },
+            addPhoto() {
+                let id_photo = this.$store.state.selectedPhoto.id
+                let id_serie = this.$route.params.id.trim()
+
+                let param = {
+                    photo_id: id_photo,
+                    serie_id: id_serie
+                }
+
+                axios.post('photo/serie', param).then((response) => {
+                    this.isPhotoAdded = true
+                    this.getPhotosFromSerie()
+                    this.openModal()
+                    console.log(response.status)
+                })
+
+
+            }
 
         },
         mounted() {
             this.serie = this.getSerieDetailById(this.$route.params.id)
             this.getPhotosFromSerie()
-            console.log(this.serie)
+            this.$store.commit("selectedPhoto", [])
+            this.$bus.$on('change-state-selectedphoto', (state) => {
+                this.changeState(state)
+            })
 
-
+            console.log(this.$store.state.selectedPhoto === null)
         },
 
 
@@ -176,6 +241,33 @@
 
         .modal {
             .modal-background {
+
+            }
+
+            .modal-content {
+                width: 1000px;
+
+                .section {
+                    width: 100%;
+                    height: 90vh;
+                    background-color: white;
+
+
+                    .container-photos {
+                        background-color: ghostwhite;
+                        padding: 15px;
+                        height: 700px;
+                        overflow: auto;
+
+
+                    }
+
+                    .actions {
+                        margin-top: 15px;
+                    }
+
+
+                }
             }
         }
 

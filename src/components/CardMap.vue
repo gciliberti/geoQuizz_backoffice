@@ -34,7 +34,6 @@
                 let card = this.$refs.map
                 card.classList.add('card-active')
                 this.$store.commit('selectedMap', map)
-                let cardActive = document.querySelector('.card-active')
                 let cards = document.querySelectorAll('.card.map.card-active')
                 if (cards.length > 1 && cards[1].classList.contains('card-active')) {
                     cards[1].classList.remove('card-active')

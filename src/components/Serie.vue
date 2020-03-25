@@ -8,12 +8,13 @@
                     <input v-model="ville" class="input" type="text" placeholder="Choisissez une ville !">
                 </div>
                 <div class="form">
-                    <p class="dist">Veuillez choisir une distance</p>
-                    <input v-model="dist" class="input" type="number" placeholder="Choisissez une distance !" min="0">
+                    <p class="dist">Veuillez choisir une distance (en mètre, min : 200m et max : 3000m )</p>
+                    <input v-model="dist" class="input" type="number" placeholder="Choisissez une distance !" min="100"
+                           max="3000">
                 </div>
                 <div class="recap-infos">
-                    <p v-if="ville !== ''"><strong>Ville :</strong>{{ville}}</p>
-                    <p v-if="dist !== null"><strong>Paramètre de distance :</strong>{{dist}}</p>
+                    <p v-if="ville !== ''"><strong>Ville :</strong> {{ville}}</p>
+                    <p v-if="dist !== null"><strong>Paramètre de distance :</strong> {{dist}} m</p>
                 </div>
             </div>
         </div>
@@ -24,7 +25,6 @@
                 <div class="container-photos">
                     <div class="columns is-multiline">
                         <div v-for="photo in photos" class="column is-one-quarter-desktop is-half-tablet">
-                            <!--                            <a v-if="activeDelete === true" @click="deletePhoto(photo.id)" class="delete"></a>-->
                             <CardPhoto :item="photo"/>
                         </div>
                     </div>
