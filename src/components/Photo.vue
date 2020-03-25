@@ -32,7 +32,7 @@
         <div class="map-image" v-if="i === 2">
             <h2>Étape numéro 2 : Déterminer les coordonnées de la photo</h2>
             <div class="map">
-                <h2>Glissez le curseur à la position de votre photo</h2>
+                <h2>Glissez le curseur à la position de votre photo ou rremplissez le formulaire ci-dessous :</h2>
                 <l-map ref="map" :zoom="zoom" :center="marker.position" style="height: 300px; width:500px">
                     <l-control-scale
                             position="topright"
@@ -42,7 +42,20 @@
                     <l-tile-layer :url="url"/>
                     <l-marker :lat-lng.sync="marker.position" :draggable="true"></l-marker>
                 </l-map>
-                <p><strong> Coordonnées de la photo </strong> : {{parseFloat(marker.position.lat).toFixed(5)}},
+
+                <div class="form">
+                    <div class="field">
+                        <p>Coordonnées (veillez à ce que les coordonnées éxistent) :</p>
+                        <div class="control">
+                            <input class="input" placeholder="latitude" v-model="newlat">
+                            <input class="input" placeholder="Longitude" v-model="newLng">
+                        </div>
+                    </div>
+                    <button @click="updateCoord" class="button is-primary is-outlined">Valider les coordonnées</button>
+                </div>
+
+                <p><strong> Coordonnées de la photo </strong> :
+                    {{parseFloat(marker.position.lat).toFixed(5)}},
                     {{parseFloat(marker.position.lng).toFixed(5)}}</p>
             </div>
         </div>
@@ -128,11 +141,11 @@
                 imageName: '',
                 imagesize: '',
                 desc: '',
-
-
                 marker: {
                     position: {lat: '', lng: ''}
                 },
+                newlat: null,
+                newLng: null,
                 latitude: "",
                 longitude: "",
                 zoom: 15,
@@ -198,6 +211,12 @@
             showPosition(position) {
                 this.marker.position.lat = position.coords.latitude;
                 this.marker.position.lng = position.coords.longitude;
+            },
+
+
+            updateCoord() {
+                this.marker.position.lat = this.newlat
+                this.marker.position.lng = this.newLng
             },
 
 
@@ -323,13 +342,45 @@
         }
 
         .map-image {
+            margin-bottom: 30px;
+            height: auto;
+
             .map {
 
                 z-index: 1;
                 width: 500px;
-                height: 300px;
+                height: auto;
                 margin-left: auto;
                 margin-right: auto;
+
+
+                .form {
+
+                    button {
+                        margin-bottom: 15px;
+                    }
+
+                    .field {
+                        width: 65%;
+                        margin-left: auto;
+                        margin-right: auto;
+                        display: block;
+                        padding: 15px 0 0 0;
+                        text-align: left;
+
+                        .control {
+
+                            input {
+                                width: 48%;
+
+                                &:first-of-type {
+                                    margin-right: 2%;
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
         }
 

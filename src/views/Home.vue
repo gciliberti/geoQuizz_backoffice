@@ -8,7 +8,7 @@
                             <router-link to="/photo">Ajouter une photo</router-link>
                         </li>
                         <li>
-                            <router-link to="/serie">Ajouter ubne série</router-link>
+                            <router-link to="/serie">Ajouter une série</router-link>
                         </li>
                     </ul>
                 </div>

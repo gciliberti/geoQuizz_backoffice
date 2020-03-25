@@ -11,11 +11,17 @@
                     </div>
                     <footer class="card-footer">
                         <p class="card-footer-item">
-                            <strong>{{serie.ville}}</strong>
+                            Ville : <strong>{{serie.ville}}</strong>
+                        </p>
+                    </footer>
+                    <footer class="card-footer">
+                        <p class="card-footer-item">
+                            Distance :
+                            <strong>{{serie.dist}} m</strong>
                         </p>
                         <p class="card-footer-item">
-                            Ville :
-                            <strong>{{serie.dist}}</strong>
+                            Photos jouable :
+                            <strong>{{serie.photos_jouables}}</strong>
                         </p>
                     </footer>
                 </div>
@@ -36,6 +42,8 @@
                 <div class="container-photos">
                     <div class="columns is-multiline">
                         <div v-for="photo in photosSerie" class="column is-one-quarter-desktop is-half-tablet">
+                            <a v-if="activeDelete === true" @click="deletePhoto(photo.id)" class="delete"></a>
+
                             <div ref="photo" class="card photo">
                                 <div class="card-image">
                                     <figure class="image">
@@ -227,8 +235,8 @@
                         a.delete {
                             background-color: #FF3860;
                             position: relative;
-                            top: 16px;
-                            left: 125px;
+                            left: 50%;
+                            top: 15px;
                             height: 0;
                             z-index: 1;
                         }

@@ -9,7 +9,7 @@
                 </div>
                 <div class="form">
                     <p class="dist">Veuillez choisir une distance (en mètre, min : 200m et max : 3000m )</p>
-                    <input v-model="dist" class="input" type="number" placeholder="Choisissez une distance !" min="100"
+                    <input v-model="dist" class="input" type="number" placeholder="Choisissez une distance !" min="200"
                            max="3000">
                 </div>
                 <div class="form">
@@ -37,7 +37,9 @@
 
                 </div>
             </div>
-            <div class="actions">
+            <p v-if="this.$store.state.selectedPhotos.length === 0" class="has-text-danger">Vous devez sélectionner des
+                photos pour continuer</p>
+            <div v-else class="actions">
                 <a v-if="this.$store.state.selectedPhotos.length > 0" class="button is-danger first"
                    @click="emptyPhotos">Réinitialiser
                     les
@@ -62,7 +64,8 @@
                     </div>
                 </div>
             </div>
-            <div class="actions">
+            <p v-if="this.$store.state.selectedMap.length === 0">Vous devez sélectionner une map pour continuer</p>
+            <div v-else class="actions">
                 <a v-if="mapSerie !== null" class="button is-danger first"
                    @click="emptyMap">Réinitialiser
                     la map choisi</a>
@@ -89,12 +92,12 @@
                     <span>Vous devez choisir une ville </span>
                     <span><i class="fas fa-exclamation-triangle"></i></span>
                 </p>
-                <p v-if="dist !== null">Vous avez choisi une distance en jeu de :<strong>{{dist}}</strong></p>
+                <p v-if="dist !== null">Vous avez choisi une distance en jeu de :<strong> {{dist}}</strong></p>
                 <p v-else class="has-text-danger has-icons-right">
                     <span>Vous devez choisir une distance de jeu </span>
                     <span><i class="fas fa-exclamation-triangle"></i></span>
                 </p>
-                <p v-if="nbPhotoSerie !== null">Vous avez choisi <strong>{{nbPhotoSerie}}</strong>photos jouable</p>
+                <p v-if="nbPhotoSerie !== null">Vous avez choisi <strong>{{nbPhotoSerie}}</strong> photos jouable</p>
                 <p v-else class="has-text-danger has-icons-right">
                     <span>Vous devez choisir une distance de jeu </span>
                     <span><i class="fas fa-exclamation-triangle"></i></span>
@@ -146,7 +149,7 @@
         <router-link to="/" v-if="done === true">Retour à l'accueil</router-link>
         <p class="has-text-danger" v-if="isPhotoValidated===false && i === 2">Vous devez valider les photos pour
             continuer</p>
-        <p class="has-text-danger" v-else-if="isMapValidated===false && i === 3">Vous devez valider les photos pour
+        <p class="has-text-danger" v-else-if="isMapValidated===false && i === 3">Vous devez valider la map pour
             continuer</p>
         <div v-else>
             <button v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
@@ -257,14 +260,16 @@
                     dist: this.dist,
                     photos: [photosTab],
                     photos_jouables: this.nbPhotoSerie
-
                 };
-                axios.post('series/serie', param).then((response) => {
+                console.log(param)
+                axios.post("series/serie", param).then((response) => {
                     this.done = true;
                     this.$bus.$emit('update-serie-list')
                     console.log(response.status)
+                    console.log(response.data)
+                }).catch((err) => {
+                    console.log(err.response)
                 })
-
 
             }
 
@@ -274,7 +279,8 @@
             this.photosSerie = null
             this.mapSerie = null
             this.done = false
-            console.table(this.maps)
+            this.$store.commit('clearSelectedPhotos')
+            this.$store.commit('clearSelectedMap')
 
         },
 
@@ -386,7 +392,7 @@
 
 
                 .photos {
-                    height: 500px;
+                    height: auto;
                     overflow: auto;
                     /*border: 2px solid #00D1B2;*/
                     margin-bottom: 25px;

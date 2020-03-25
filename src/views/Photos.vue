@@ -100,7 +100,7 @@
 
         a.delete {
             z-index: 1;
-            left: 155px;
+            left: 50%;
             top: 15px;
             position: relative;
             background-color: #FF3860;

@@ -32,7 +32,7 @@
             selectPhoto(photo) {
                 if (this.$router.currentRoute.name !== 'DetailSerie') {
                     let card = this.$refs.photo
-                    card.classList.toggle('card-active')
+                    card.classList.add('card-active')
                     this.$store.commit('selectedPhotos', photo)
                 } else {
                     let card = this.$refs.photo
