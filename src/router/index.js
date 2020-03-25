@@ -8,6 +8,8 @@ import Photo from "../components/Photo";
 import Register from "../views/Register";
 import Serie from "../components/Serie";
 import DetailSerie from "../components/DetailSerie";
+import Maps from "../views/Maps";
+import Map from "../components/Map";
 
 
 import store from "../store/index"
@@ -28,6 +30,10 @@ const routes = [
             {
                 path: '/serie',
                 component: Serie
+            },
+            {
+                path: '/map',
+                component: Map
             }
         ],
         beforeEnter(to, from, next) {
@@ -73,6 +79,16 @@ const routes = [
         path: '/series',
         name: 'Series',
         component: Series,
+        beforeEnter(to, from, next) {
+            if (to.name !== 'Login' && store.state.token === '') next({name: 'Login'})
+            else next()
+
+        }
+    },
+    {
+        path: '/maps',
+        name: 'Map',
+        component: Maps,
         beforeEnter(to, from, next) {
             if (to.name !== 'Login' && store.state.token === '') next({name: 'Login'})
             else next()

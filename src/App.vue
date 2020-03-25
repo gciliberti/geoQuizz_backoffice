@@ -12,6 +12,9 @@
                     <li>
                         <router-link to="/series">Liste des séries</router-link>
                     </li>
+                    <li>
+                        <router-link to="/maps">Liste des maps</router-link>
+                    </li>
                     <li @click="disconnect()">
                         <router-link class="has-text-danger" to="/disconnect">Déconnexion
                         </router-link>

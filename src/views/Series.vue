@@ -72,12 +72,12 @@
         },
 
         computed: {
-            updatePhoto() {
+            updateSeries() {
                 return this.$store.state.series
             }
         },
         watch: {
-            updatePhoto: function (newVal, oldVal) {
+            updateSeries: function (newVal, oldVal) {
                 this.series = newVal
             }
         }

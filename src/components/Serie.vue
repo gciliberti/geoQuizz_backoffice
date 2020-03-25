@@ -201,6 +201,13 @@
             }
         },
         methods: {
+
+            getMaps() {
+                axios.get('/maps').then((response) => {
+                    this.$store.commit('getMaps', response.data.maps)
+                })
+            },
+
             //pour naviguer entre les différents formulaires
             prev(i) {
 
@@ -275,6 +282,7 @@
 
         },
         mounted() {
+            this.getMaps()
             this.isPhotoValidated = false
             this.photosSerie = null
             this.mapSerie = null
