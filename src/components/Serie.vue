@@ -12,16 +12,22 @@
                     <input v-model="dist" class="input" type="number" placeholder="Choisissez une distance !" min="100"
                            max="3000">
                 </div>
+                <div class="form">
+                    <p class="dist">Veuillez choisir le nombre de photos jouable (min : 5 et max : 20 )</p>
+                    <input v-model="nbPhotoSerie" class="input" type="number"
+                           placeholder="Choisissez le nombre de photos jouable !" min="5"
+                           max="20">
+                </div>
                 <div class="recap-infos">
                     <p v-if="ville !== ''"><strong>Ville :</strong> {{ville}}</p>
                     <p v-if="dist !== null"><strong>Paramètre de distance :</strong> {{dist}} m</p>
+                    <p v-if="nbPhotoSerie !== null"><strong>Nombres de photos jouable :</strong> {{nbPhotoSerie}}</p>
                 </div>
             </div>
         </div>
         <div class="photos-serie" v-if="i === 2">
             <h2>Étape numéro 2 : Selectionnez et validez les photos que vous voulez ajouter dans la série</h2>
             <div class="photos">
-
                 <div class="container-photos">
                     <div class="columns is-multiline">
                         <div v-for="photo in photos" class="column is-one-quarter-desktop is-half-tablet">
@@ -30,7 +36,6 @@
                     </div>
 
                 </div>
-
             </div>
             <div class="actions">
                 <a v-if="this.$store.state.selectedPhotos.length > 0" class="button is-danger first"
@@ -85,6 +90,11 @@
                     <span><i class="fas fa-exclamation-triangle"></i></span>
                 </p>
                 <p v-if="dist !== null">Vous avez choisi une distance en jeu de :<strong>{{dist}}</strong></p>
+                <p v-else class="has-text-danger has-icons-right">
+                    <span>Vous devez choisir une distance de jeu </span>
+                    <span><i class="fas fa-exclamation-triangle"></i></span>
+                </p>
+                <p v-if="nbPhotoSerie !== null">Vous avez choisi <strong>{{nbPhotoSerie}}</strong>photos jouable</p>
                 <p v-else class="has-text-danger has-icons-right">
                     <span>Vous devez choisir une distance de jeu </span>
                     <span><i class="fas fa-exclamation-triangle"></i></span>
@@ -176,6 +186,7 @@
                 i: 1,
                 ville: '',
                 dist: null,
+                nbPhotoSerie: null,
                 photos: this.$store.state.photos,
                 maps: this.$store.state.maps,
                 photosSerie: null,
@@ -239,13 +250,15 @@
                 let photosTab = []
                 this.photosSerie.forEach((item) => {
                     photosTab.push(item.id)
-                })
+                });
                 let param = {
                     ville: this.ville,
                     map_refs: this.mapSerie.id,
                     dist: this.dist,
-                    photos: [photosTab]
-                }
+                    photos: [photosTab],
+                    photos_jouables: this.nbPhotoSerie
+
+                };
                 axios.post('series/serie', param).then((response) => {
                     this.done = true;
                     this.$bus.$emit('update-serie-list')

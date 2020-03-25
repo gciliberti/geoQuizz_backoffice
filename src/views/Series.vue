@@ -47,6 +47,14 @@
         },
         components: {},
         methods: {
+
+            getSeries() {
+                axios.get('/series').then((response) => {
+                    this.$store.commit('getSeries', response.data.series)
+                })
+            },
+
+
             activeDeleteSerie() {
                 this.activeDelete = !this.activeDelete
             },
@@ -60,7 +68,7 @@
             }
         },
         mounted() {
-
+            this.getSeries()
         },
 
         computed: {

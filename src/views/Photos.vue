@@ -48,6 +48,14 @@
             }
         },
         methods: {
+
+            getPhotos() {
+                axios.get('/photos').then((response) => {
+                    this.$store.commit('getPhotos', response.data.photos)
+                })
+            },
+
+
             activeDeletePhoto() {
                 this.activeDelete = !this.activeDelete
             },
@@ -63,7 +71,7 @@
 
         },
         mounted() {
-
+            this.getPhotos()
         },
 
         computed: {
