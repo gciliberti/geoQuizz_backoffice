@@ -1,86 +1,59 @@
 <template>
     <div class="photo ">
-
-        <div v-if="i === 1" class="drop-photo">
-            <h2>Étape numéro 1 : Choisissez une image à importer</h2>
-            <div class="file is-primary" ref="dropZone" v-bind:class="{'isHover' : isHover}" @dragover.prevent
-                 @drop.prevent="onDropp" @dragenter=" isHover = true" @dragleave="isHover = false">
-                <label class="file-label" @change="onChange">
-                    <input class="file-input" type="file" name="resume">
-                    <span v-if="isActive === false" class="file-cta">
-                    <span class="file-icon">
-                        <i class="fas fa-upload"></i>
-                    </span>
-                    <span class="file-label">Choose a file…</span>
-                </span>
-                    <img v-else :src="imageSrc" alt="">
-                </label>
-
-            </div>
-            <div v-if="imageName !== ''" class="form">
-                <p>
-                    <strong>Nom du fichier : </strong>{{imageName}}
-                    <br>
-                    <strong>taille : </strong>{{imagesize}} octets
-                </p>
-                <p class="desc">Veuillez remplir la description de la photo</p>
-                <input v-model="desc" class="input" type="text" placeholder="Description de la photo, soyez concis !">
-            </div>
-
-
-        </div>
-        <div class="map-image" v-if="i === 2">
-            <h2>Étape numéro 2 : Déterminer les coordonnées de la photo</h2>
+        <div class="map-image" v-if="i === 1">
+            <h2>Étape numéro 1 : Déterminer les paramètres de la map</h2>
             <div class="map">
-                <h2>Glissez le curseur à la position de votre photo ou rremplissez le formulaire ci-dessous :</h2>
-                <l-map ref="map" :zoom="zoom" :center="marker.position" style="height: 300px; width:500px">
+                <h2>Placez la map ou vous le voulez, n'hésitez pas à jouer sur le zoom</h2>
+                <l-map ref="map" :zoom.sync="zoom" :center.sync="position" style="height: 300px; width:500px">
                     <l-control-scale
                             position="topright"
                             :imperial="false"
                             :metric="true"
                     ></l-control-scale>
                     <l-tile-layer :url="url"/>
-                    <l-marker :lat-lng.sync="marker.position" :draggable="true"></l-marker>
+                    <!--                    <l-marker :lat-lng.sync="marker.position" :draggable="true"></l-marker>-->
                 </l-map>
+                <p>niveau de zoom : <strong>{{zoom}}</strong></p>
+                <p> Coordonnées de la photo :
+                    <strong>
+                        {{parseFloat(position.lat).toFixed(5)}},
+                        {{parseFloat(position.lng).toFixed(5)}}
+                    </strong>
+                </p>
 
-                <div class="form">
+                <div class="form map">
                     <div class="field">
-                        <p>Coordonnées (veillez à ce que les coordonnées éxistent) :</p>
+                        <p>Veuillez choisir une ville</p>
                         <div class="control">
-                            <input class="input" placeholder="latitude" v-model="newlat">
-                            <input class="input" placeholder="Longitude" v-model="newLng">
+                            <input class="input" placeholder="choisissez une ville !" v-model="ville">
                         </div>
                     </div>
-                    <button @click="updateCoord" class="button is-primary is-outlined">Valider les coordonnées</button>
                 </div>
 
-                <p><strong> Coordonnées de la photo </strong> :
-                    {{parseFloat(marker.position.lat).toFixed(5)}},
-                    {{parseFloat(marker.position.lng).toFixed(5)}}</p>
+
             </div>
         </div>
-        <div v-if="i === 3" class="recap-photo">
+        <div v-if="i === 2" class="recap-photo">
             <h2>Étape numéro 3 : Validation des données
-                <button v-show="!done" v-if="desc !== '' && imageSrc !== ''"
+                <button v-show="!done" v-if="ville !== '' && zoom !== null && position !== null && imageSrc !== ''"
                         class="validate button is-primary is-outlined"
-                        @click="uploadPhoto">Créer la photo
+                        @click="uploadMap">Créer la map
                 </button>
                 <p class="has-text-success" v-if="done === true">La photo à été uploadé !</p>
             </h2>
             <div class="recap">
-                <img v-if="imageSrc !== ''" :src="imageSrc" alt="">
-                <p v-else class="has-text-danger has-icons-right">
-                    <span>Vous devez choisir une photo </span>
-                    <span><i class="fas fa-exclamation-triangle"></i></span>
+                <p>voici la miniature de la map :</p>
+                <img ref="imgData" class="image-data" v-if="imageSrc !== ''" :src="imageSrc" alt="">
+                <p><strong>Coordonnées :</strong> : {{parseFloat(position.lat).toFixed(5)}},
+                    {{parseFloat(position.lng).toFixed(5)}}
                 </p>
-                <p v-if="desc !== ''"><strong>Description </strong> : {{desc}}</p>
-                <p v-else class="has-text-danger has-icons-right">
-                    <span>Vous devez écrire une description </span>
-                    <span><i class="fas fa-exclamation-triangle"></i></span>
-                </p>
-                <p><strong>Coordonnées :</strong> : {{parseFloat(marker.position.lat).toFixed(5)}},
-                    {{parseFloat(marker.position.lng).toFixed(5)}}</p>
+                <p>Niveau de zoom : <strong>{{zoom}}</strong></p>
 
+                <p v-if="ville !==''">Ville : <strong>{{ville}}</strong></p>
+                <p v-else class="has-text-danger has-icons-right">
+                    <span>Vous devez Définir une ville</span>
+                    <span><i class="fas fa-exclamation-triangle"></i></span>
+                </p>
             </div>
             <!--            <p v-if="done === true">La photo à été uploadé !</p>-->
             <!--            <button v-show="!done" v-if="desc !== '' && imageSrc !== ''"-->
@@ -89,7 +62,6 @@
             <!--            </button>-->
 
         </div>
-
         <router-link to="/" v-if="done === true">Retour à l'accueil</router-link>
         <button v-show="done === false" v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
             <span>Précédent</span>
@@ -97,7 +69,7 @@
                     <i class="fas fa-arrow-left"></i>
                 </span>
         </button>
-        <button v-if="i !==3" class="button is-primary is-rounded" @click="next(1)">
+        <button v-if="i !==2" class="button is-primary is-rounded" @click="next(1)">
             <span>Suivant</span>
             <span class="icon is-small">
                     <i class="fas fa-arrow-right"></i>
@@ -138,60 +110,15 @@
                 isActive: false,
                 isHover: false,
                 imageSrc: '',
-                imageName: '',
-                imagesize: '',
-                desc: '',
-                marker: {
-                    position: {lat: '', lng: ''}
-                },
-                newlat: null,
-                newLng: null,
-                latitude: "",
-                longitude: "",
+                position: {lat: '', lng: ''},
                 zoom: 15,
+                ville: '',
                 url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-
                 done: false
 
             }
         },
         methods: {
-
-            //pour upload la photo
-            onDropp(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                let droppedImg = e.dataTransfer.files;
-                this.createFile(droppedImg[0])
-            },
-            onChange(e) {
-                let files = e.target.files;
-                this.createFile(files[0]);
-
-            },
-
-            createFile(file) {
-                console.log(file)
-                if (!file.type.match('image.*')) {
-                    alert('Il faut glisser une image');
-                } else {
-                    this.imageName = file.name
-                    this.imagesize = file.size
-                    this.isActive = true;
-                    this.isHover = true;
-                    let img = new Image();
-                    let reader = new FileReader();
-
-                    reader.onload = (e) => {
-                        this.imageSrc = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            },
-
-            addPhoto() {
-                console.log(this.imageSrc)
-            },
 
             //pour naviguer entre les différents formulaires
             prev(i) {
@@ -202,72 +129,44 @@
             },
             next(i) {
 
-                if (this.i <= 2) {
+                if (this.i <= 1) {
                     this.i += i;
                 }
+                this.imageSrc = "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/" + this.position.lng + "," + this.position.lat + "," + this.zoom + "/600x500?access_token=pk.eyJ1IjoiaHByb3V4MDQiLCJhIjoiY2s3eDdpeWF5MDlhdTNlcjRjNjJ4c2M4MCJ9.AcRRway0cND7xi7deoa7Gw"
             },
 
             //pour la map
             showPosition(position) {
-                this.marker.position.lat = position.coords.latitude;
-                this.marker.position.lng = position.coords.longitude;
+                this.position.lat = position.coords.latitude;
+                this.position.lng = position.coords.longitude;
             },
 
 
-            updateCoord() {
-                this.marker.position.lat = this.newlat
-                this.marker.position.lng = this.newLng
-            },
+            uploadMap() {
 
-
-            uploadPhoto() {
-
-
-                let src = this.imageSrc.split(',');
-                let photo = src[1]
-                let desc = this.desc
-                let lat = parseFloat(this.marker.position.lat).toFixed(5);
-                let lng = parseFloat(this.marker.position.lng).toFixed(5)
-
-                let localisation = this.marker.position.lat + ',' + this.marker.position.lng
                 let param = {
-                    photo: photo,
-                    description: desc,
-                    localisation: localisation
+                    lat: this.position.lat,
+                    lng: this.position.lng,
+                    zoom: this.zoom,
+                    ville: this.ville,
+                    miniature: this.imageSrc
                 }
-                console.log(param)
-                axios.post('/photos/photo', param).then((response) => {
+
+                axios.post('maps', param).then((response) => {
                     console.log(response.status)
-
-                    if (response.status === 200) {
-
-                        this.done = true
-                        this.$bus.$emit('update-photo-list')
-                    }
-                    axios.get('/photos/').then((response) => {
-                        this.$store.commit('getPhotos', response.data.photos)
-                    })
                 }).catch((err) => {
-                    console.log(err);
-                    alert("Une erreur est survenue");
+                    console.log(err)
                 })
-            }
+
+            },
+
+
         },
         mounted() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(this.showPosition);
             }
-        }, watch: {
-            i: function (val) {
-                if (val === 2) {
-                    setTimeout(() => {
-                        let map = this.$refs.map;
-                        console.log(map)
-                    }, 100);
-
-                }
-            }
-        }
+        },
 
     }
 </script>
@@ -354,7 +253,7 @@
                 margin-right: auto;
 
 
-                .form {
+                .form.map {
 
                     button {
                         margin-bottom: 15px;
@@ -371,11 +270,7 @@
                         .control {
 
                             input {
-                                width: 48%;
-
-                                &:first-of-type {
-                                    margin-right: 2%;
-                                }
+                                width: 100%;
                             }
                         }
                     }
