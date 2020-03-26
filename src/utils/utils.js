@@ -13,7 +13,6 @@ export const outils = {
         },
 
         getSerieDetailById(id) {
-
             let series = this.$store.state.series
             for (let i = 0; i < series.length; i++) {
                 // console.log(maps[i].id)
@@ -22,6 +21,17 @@ export const outils = {
                 }
             }
 
+        },
+
+
+        getMapById(id) {
+            let maps = this.$store.state.maps
+            for (let i = 0; i < maps.length; i++) {
+                // console.log(maps[i].id)
+                if (maps[i].id == id) {
+                    return maps[i]
+                }
+            }
         }
 
     }

@@ -152,7 +152,7 @@
         <p class="has-text-danger" v-else-if="isMapValidated===false && i === 3">Vous devez valider la map pour
             continuer</p>
         <div v-else>
-            <button v-if="i !==1" class="button is-primary is-rounded" @click="prev(-1)">
+            <button v-if="i !==1" v-show="done === false" class="button is-primary is-rounded" @click="prev(-1)">
             <span class="icon is-small">
                     <i class="fas fa-arrow-left"></i>
             </span>

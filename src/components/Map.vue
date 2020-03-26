@@ -39,7 +39,7 @@
                         class="validate button is-primary is-outlined"
                         @click="uploadMap">Créer la map
                 </button>
-                <p class="has-text-success" v-if="done === true">La photo à été uploadé !</p>
+                <p class="has-text-success" v-if="done === true">La map à été uploadé !</p>
             </h2>
             <div class="recap">
                 <p>voici la miniature de la map :</p>
@@ -153,7 +153,7 @@
                 }
 
                 axios.post('maps', param).then((response) => {
-                    console.log(response.status)
+                    this.done = true
                 }).catch((err) => {
                     console.log(err)
                 })

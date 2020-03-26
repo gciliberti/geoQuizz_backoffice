@@ -7,6 +7,7 @@
             </div>
             <div class="columns is-multiline">
                 <div v-for="map in maps" class="column is-one-quarter-desktop is-half-tablet">
+                    <a v-if="activeDelete === true" @click="handler(map.id)" class="delete"></a>
                     <div ref="map" class="card map">
                         <div class="card-image">
                             <figure class="image">
@@ -29,6 +30,49 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal map" v-bind:class="{'is-active':isModalActive}">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Vous vous apprêtez à supprimer cette Map</p>
+                </header>
+                <section class="modal-card-body">
+                    <div class="recap">
+                        <div v-if="mapToDelete !== null" class="card map">
+                            <div class="card-image">
+                                <figure class="image">
+                                    <img :src="mapToDelete.miniature" alt="">
+                                </figure>
+                                <div class="card-content is-overlay is-clipped">
+                                                        <span class="tag is-info">
+                                                            {{mapToDelete.ville}}
+                                                        </span>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <p class="card-footer-item">
+                                    <strong>Niveau de zoom : </strong>
+                                    {{mapToDelete.zoom}}
+                                </p>
+                            </footer>
+                        </div>
+                        <p class="has-text-danger has-icons-left">
+                            <span><i class="fas fa-exclamation-triangle"></i></span>
+                            attention cette action est irréversible, si vous supprimer une map vous allez supprimer la
+                            série
+                            qui y est associé !
+                        </p>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button @click="deleteMap(mapToDelete.id)" class="button is-danger">supprimer la map</button>
+                    <p v-if="done===true" class="has-text-success">La map à été supprimé</p>
+                </footer>
+            </div>
+            <button @click="openModal" class="modal-close is-large" aria-label="close"></button>
+        </div>
+
     </div>
 </template>
 
@@ -41,7 +85,10 @@
         data() {
             return {
                 maps: this.$store.state.maps,
-                activeDelete: false
+                activeDelete: false,
+                isModalActive: false,
+                mapToDelete: null,
+                done: false
             }
         },
         methods: {
@@ -58,11 +105,27 @@
                 this.activeDelete = !this.activeDelete
             },
 
-            deletePhoto(id) {
-                axios.delete('/photo/' + id).then((response) => {
-                    console.log(response.status)
-                    this.$bus.$emit('update-photo-list')
+            openModal() {
+                this.isModalActive = !this.isModalActive
+            },
 
+            handler(id) {
+                if (id) {
+                    this.mapToDelete = this.getMapById(id)
+                    console.log(this.mapToDelete)
+                }
+                this.openModal()
+            },
+
+            deleteMap(id) {
+                console.log(id)
+                axios.delete('maps/map/' + id).then((response) => {
+                    console.log(response.data)
+                    this.getMaps()
+                    this.done = true
+                    setTimeout(() => {
+                        this.openModal()
+                    }, 1000)
                 })
             },
 
@@ -79,7 +142,7 @@
         },
         watch: {
             updateMaps: function (newVal, oldVal) {
-                this.photos = newVal
+                this.maps = newVal
             }
         }
 
@@ -122,5 +185,9 @@
                 height: auto;
             }
         }
+    }
+
+    .modal-map {
+
     }
 </style>
