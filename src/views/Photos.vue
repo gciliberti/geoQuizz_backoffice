@@ -51,7 +51,7 @@
 
             getPhotos() {
                 axios.get('/photos').then((response) => {
-                    this.$store.commit('getPhotos', response.data.photos)
+                    this.$store.commit('getPhotos', response.data.photos.reverse())
                 })
             },
 

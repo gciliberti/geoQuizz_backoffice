@@ -146,8 +146,8 @@
                 marker: {
                     position: {lat: '', lng: ''}
                 },
-                newlat: null,
-                newLng: null,
+                newlat: '',
+                newLng: '',
                 latitude: "",
                 longitude: "",
                 zoom: 15,
