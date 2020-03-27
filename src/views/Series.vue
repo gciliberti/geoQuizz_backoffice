@@ -65,6 +65,7 @@
                 axios.delete('/series/serie/' + id).then((response) => {
                     // console.log(response.status)
                     this.$bus.$emit('update-serie-list')
+                    this.getSeries()
                 })
 
             }
