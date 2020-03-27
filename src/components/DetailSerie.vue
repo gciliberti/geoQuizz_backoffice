@@ -162,8 +162,10 @@
                 axios.post('photo/serie', param).then((response) => {
                     this.isPhotoAdded = true
                     this.getPhotosFromSerie()
-                    this.openModal()
-                    console.log(response.status)
+                    setTimeout(() => {
+                        this.openModal()
+                        this.isPhotoAdded = false
+                    }, 200)
                 })
 
 

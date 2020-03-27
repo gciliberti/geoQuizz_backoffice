@@ -2,7 +2,7 @@
     <div class="maps section">
         <div class="container">
             <div class="actions">
-                <a v-if="activeDelete === false" @click="activeDeletePhoto">Supprimer une photo</a>
+                <a v-if="activeDelete === false" @click="activeDeletePhoto">Supprimer une map</a>
                 <a v-else @click="activeDeletePhoto">Désactiver supression</a>
             </div>
             <div class="columns is-multiline">
@@ -30,7 +30,6 @@
                 </div>
             </div>
         </div>
-
         <div class="modal map" v-bind:class="{'is-active':isModalActive}">
             <div class="modal-background"></div>
             <div class="modal-card">
