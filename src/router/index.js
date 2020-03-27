@@ -22,6 +22,11 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home,
+        beforeEnter(to, from, next) {
+            if (to.name !== 'Login' && store.state.token === '') next({name: 'Login'})
+            else next()
+
+        },
         children: [
             {
                 path: '/photo',
@@ -33,24 +38,30 @@ const routes = [
             },
             {
                 path: '/map',
-                component: Map
+                component: Map,
+
             }
         ],
-        beforeEnter(to, from, next) {
-            if (to.name !== 'Login' && store.state.token === '') next({name: 'Login'})
-            else next()
 
-        }
     },
     {
         path: '/login',
         name: 'Login',
         component: Login,
+        beforeEnter(to, from, next) {
+            if (to.name === 'Login' && store.state.token !== '') next({name: from.name})
+            else next()
+        }
     },
     {
         path: '/register',
         name: 'Register',
-        component: Register
+        component: Register,
+        beforeEnter(to, from, next) {
+            if (to.name === 'Register' && store.state.token !== '') next({name: from.name})
+            else next()
+
+        }
     },
 
     {
@@ -62,6 +73,7 @@ const routes = [
             else next()
 
         }
+
     },
     {
         path: '/series',
@@ -72,6 +84,7 @@ const routes = [
             else next()
 
         }
+
     },
     {
         path: '/maps',
@@ -82,6 +95,7 @@ const routes = [
             else next()
 
         }
+
     },
     {
         path: '/disconnect',
@@ -92,6 +106,7 @@ const routes = [
             else next()
 
         }
+
     },
 
     {
@@ -103,6 +118,7 @@ const routes = [
             else next()
 
         }
+
     },
 
 ]
@@ -110,5 +126,6 @@ const routes = [
 const router = new VueRouter({
     routes
 })
+
 
 export default router

@@ -82,7 +82,7 @@
                         if (response.status === 201) {
                             this.$store.commit('getToken', response.data.token)
                             // console.log(this.$store.state.token)
-                            // this.$router.push('/')
+                            this.$router.push('/')
                         } else {
                             // Console.log('fail')
                         }
