@@ -24,17 +24,20 @@
                         </h2>
                         <ol>
                             <li>
-                                Ajouter des photos dans le jeux
+                                Ajouter ou supprimer des photos dans le jeu
                             </li>
                             <li>
-                                Créer des séries de jeux : en choisissant les photos, le nombre de photos jouable dans la partie,
+                                Créer ou supprimer des séries de jeu
                             </li>
-                            <li class="list-item">
-                                créer des map de jeux ()
+                            <li>
+                                Créer ou supprimer des map de jeux
                             </li>
                         </ol>
-
-
+                        <footer>
+                            <h2 class="subtitle is-6">Projet réalisé dans le cadre de la licence professionnelle CIASIE
+                                de <strong>
+                                    Nancy </strong></h2>
+                        </footer>
                     </div>
                     <router-view/>
                 </div>
@@ -46,13 +49,9 @@
 
 <script>
     // @ is an alias to /src
-    import HelloWorld from '@/components/HelloWorld.vue'
-
     export default {
         name: 'Home',
-        components: {
-            HelloWorld,
-        },
+        components: {},
         data() {
             return {}
         },
@@ -119,6 +118,31 @@
 
             .component {
                 padding-left: 30px;
+
+                .accueil {
+                    ol {
+                        color: #2c3e50;
+                        list-style-type: none;
+                    }
+
+                    footer {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 6vh;
+                        background-color: #2c3e50;
+
+                        h2 {
+                            color: white;
+                            padding-top: 20px;
+
+                            strong {
+                                color: white;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

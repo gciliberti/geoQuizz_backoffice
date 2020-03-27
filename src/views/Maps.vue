@@ -59,8 +59,9 @@
                         <p class="has-text-danger has-icons-left">
                             <span><i class="fas fa-exclamation-triangle"></i></span>
                             attention cette action est irréversible, si vous supprimer une map vous allez supprimer la
-                            série
-                            qui y est associé !
+                            ou les
+                            séries
+                            qui y sont associé !
                         </p>
                     </div>
                 </section>
@@ -111,15 +112,15 @@
             handler(id) {
                 if (id) {
                     this.mapToDelete = this.getMapById(id)
-                    console.log(this.mapToDelete)
+                    // console.log(this.mapToDelete)
                 }
                 this.openModal()
             },
 
             deleteMap(id) {
-                console.log(id)
+                // console.log(id)
                 axios.delete('maps/map/' + id).then((response) => {
-                    console.log(response.data)
+                    // console.log(response.data)
                     this.getMaps()
                     this.done = true
                     setTimeout(() => {

@@ -62,7 +62,7 @@
 
             deletePhoto(id) {
                 axios.delete('/photo/' + id).then((response) => {
-                    console.log(response.status)
+                    // console.log(response.status)
                     this.$bus.$emit('update-photo-list')
 
                 })

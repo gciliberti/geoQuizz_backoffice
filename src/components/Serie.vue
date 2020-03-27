@@ -224,13 +224,11 @@
 
             ValidatePhotos() {
                 this.photosSerie = this.$store.state.selectedPhotos
-                console.table(this.$store.state.selectedPhotos)
                 this.isPhotoValidated = !this.isPhotoValidated
             },
             validateMap() {
                 this.isMapValidated = !this.isMapValidated
                 this.mapSerie = this.$store.state.selectedMap
-                console.log(this.mapSerie)
             },
 
             emptyPhotos() {
@@ -268,12 +266,11 @@
                     photos: [photosTab],
                     photos_jouables: this.nbPhotoSerie
                 };
-                console.log(param)
                 axios.post("series/serie", param).then((response) => {
                     this.done = true;
                     this.$bus.$emit('update-serie-list')
-                    console.log(response.status)
-                    console.log(response.data)
+                    // console.log(response.status)
+                    // console.log(response.data)
                 }).catch((err) => {
                     console.log(err.response)
                 })

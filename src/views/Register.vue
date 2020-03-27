@@ -77,14 +77,14 @@
                         motdepasse: this.log.password,
                         telephone: this.log.phone,
                     };
-                    console.table(param)
+                    // console.table(param)
                     axios.post('/register', param).then((response) => {
                         if (response.status === 201) {
                             this.$store.commit('getToken', response.data.token)
-                            console.log(this.$store.state.token)
+                            // console.log(this.$store.state.token)
                             // this.$router.push('/')
                         } else {
-                            Console.log('fail')
+                            // Console.log('fail')
                         }
                     })
                 }

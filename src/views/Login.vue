@@ -70,28 +70,17 @@
                             this.$store.commit('getToken', token);
                             // this.$store.commit('getMemberID', member_id.id.trim());
                             // this.$store.commit('getMemberName', member_id.fullname.trim());
-                            console.log(token)
+                            // console.log(token)
                             this.$router.push('/');
-                        } else {
+                        } else if (response.status === 401) {
                             console.log('erreur')
                         }
                     })
                 }
-                // let parametre = {
-                //     fullname: "lucas",
-                //     email: "lucas.gurgey@orange.fr",
-                //     password: "123soleil"
-                // };
-                // axios.post('members', parametre).then((response) => {
-                //     console.table(response.data);
-                //     console.log(response)
-                // });
             }
         },
         mounted() {
-            // if (this.$store.state.token !== "") {
-            //     this.$router.push('/')
-            // }
+
         },
     }
 </script>

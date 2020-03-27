@@ -138,7 +138,7 @@
             deletePhoto(id) {
                 let id_serie = this.$route.params.id.trim()
                 axios.delete('photo/serie/' + id_serie + '/' + id).then((response) => {
-                    console.log(response.status)
+                    // console.log(response.status)
                     this.getPhotosFromSerie()
                 })
             },
@@ -179,8 +179,6 @@
             this.$bus.$on('change-state-selectedphoto', (state) => {
                 this.changeState(state)
             })
-
-            console.log(this.$store.state.selectedPhoto === null)
         },
 
 

@@ -156,7 +156,7 @@
                     this.done = true
                     this.$bus.$emit('update-map-list')
                 }).catch((err) => {
-                    console.log(err)
+                    // console.log(err)
                 })
 
             },

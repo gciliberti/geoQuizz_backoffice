@@ -39,7 +39,7 @@
                     card.classList.add('card-active')
                     this.$store.commit('selectedPhoto', photo)
                     this.$bus.$emit('change-state-selectedphoto', true)
-                    console.log(this.$store.state.selectedPhoto)
+                    // console.log(this.$store.state.selectedPhoto)
                     let cards = document.querySelectorAll('.card.photo.card-active')
                     if (cards.length > 1 && cards[1].classList.contains('card-active')) {
                         cards[1].classList.remove('card-active')

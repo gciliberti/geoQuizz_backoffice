@@ -1,6 +1,8 @@
 <template>
     <div class="series section">
         <div class="container">
+            <h4 class="subtitle is-4">Cliquez sur une série pour accèder à ses paramètres</h4>
+
             <div class="actions">
                 <a v-if="activeDelete === false" @click="activeDeleteSerie">Supprimer une Série</a>
                 <a v-else @click="activeDeleteSerie">Désactiver supression</a>
@@ -61,7 +63,7 @@
 
             deleteSerie(id) {
                 axios.delete('/series/serie/' + id).then((response) => {
-                    console.log(response.status)
+                    // console.log(response.status)
                     this.$bus.$emit('update-serie-list')
                 })
 
@@ -90,6 +92,9 @@
 
         .container {
 
+            h4 {
+                text-align: left;
+            }
 
             ul {
                 list-style: none;

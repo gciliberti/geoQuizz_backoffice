@@ -171,7 +171,7 @@
             },
 
             createFile(file) {
-                console.log(file)
+                // console.log(file)
                 if (!file.type.match('image.*')) {
                     alert('Il faut glisser une image');
                 } else {
@@ -187,10 +187,6 @@
                     };
                     reader.readAsDataURL(file);
                 }
-            },
-
-            addPhoto() {
-                console.log(this.imageSrc)
             },
 
             //pour naviguer entre les différents formulaires
@@ -235,9 +231,8 @@
                     description: desc,
                     localisation: localisation
                 }
-                console.log(param)
                 axios.post('/photos/photo', param).then((response) => {
-                    console.log(response.status)
+                    // console.log(response.status)
 
                     if (response.status === 200) {
 
@@ -248,7 +243,7 @@
                         this.$store.commit('getPhotos', response.data.photos)
                     })
                 }).catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                     alert("Une erreur est survenue");
                 })
             }
@@ -262,7 +257,7 @@
                 if (val === 2) {
                     setTimeout(() => {
                         let map = this.$refs.map;
-                        console.log(map)
+                        // console.log(map)
                     }, 100);
 
                 }
