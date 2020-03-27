@@ -51,7 +51,9 @@
                             <input class="input" placeholder="Longitude" v-model="newLng">
                         </div>
                     </div>
-                    <button @click="updateCoord" class="button is-primary is-outlined">Valider les coordonnées</button>
+                    <button v-if="newlat !== '' && newLng !== ''" @click="updateCoord"
+                            class="button is-primary is-outlined">Valider les coordonnées
+                    </button>
                 </div>
 
                 <p><strong> Coordonnées de la photo </strong> :
